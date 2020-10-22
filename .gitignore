@@ -1,3 +1,7 @@
+./binutils-gdb/*
+./build-gcc/*
+./build-binutils/*
+
 # Prerequisites
 *.d
 
