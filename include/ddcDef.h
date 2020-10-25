@@ -1,5 +1,5 @@
 #ifndef __ddcDef__
-#define __ddcDef__
+#define __ddcDef__ 1
 
 
 typedef enum DOStatus DOStatus;
@@ -27,10 +27,16 @@ typedef unsigned long long int  sizet;
 	})
 	#endif
 
+#ifndef __RUN_ERROR
+	//int __RUN_ERROR = 0;
+	#endif
 #ifndef run
-	int __RUN_ERROR = 0;
 	#define run __RUN_ERROR = -1;
+	#endif
+#ifndef end
 	#define end(x) __EXIT_JMP_##x:if(__RUN_ERROR==x)
+	#endif
+#ifndef leave
 	#define leave(x) __RUN_ERROR=x;goto __EXIT_JMP_##x;
 	#endif
 

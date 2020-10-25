@@ -1,72 +1,126 @@
-#include "../lib/ddcDef.h"
+//kernel.h    the main kernel script
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+#include "../include/kernel/kernel.h"
 
-//terminal is 80 by 25
-const sizet TERMWIDTH  = 80;
-const sizet TERMHEIGHT = 25;
-
-sizet g_termRow;// current pos of cursor y
-sizet g_termColumn;// current pos of cursor x
-short g_termColor;// current terminal color
-short* g_termBuffer;// pointer to vga video memory
-
-// temporary strlen
-sizet t_strlen(const char* _c)
+void kernel_wait_io(uint32t _timerc)
 {
-	sizet _o = 0;
-	while(_c[_o]) _o++;
+	while(1)
+	{
+		asm volatile("nop");
+		_timerc--;
+		if (_timerc <= 0) break;
+	}
+}
+
+void kernel_sleep(uint32t _timerc)
+{
+	kernel_wait_io(_timerc);
+}
+
+char kernel_get_input(void)
+{
+	char _o = 0;
+	while ((_o = system_inb(KEYBOARD_PORT)) != 0)
+		if (_o > 0) return _o;
 	return _o;
 }
 
-void init_term(void)
+void kernel_ps1(void)
 {
-	g_termRow = 0;
-	g_termColumn = 0;
-	g_termColor = 0x0F00;// white
-	g_termBuffer = (short*)0xb8000;// mem addr of vga video memory
+	term_set_color(VCOLOR_WHITE, VCOLOR_BLACK);
+	term_write_cstring("[");
+	term_set_color(VCOLOR_BLUE, VCOLOR_BLACK);
+	term_write_cstring("ddm");
+	term_set_color(VCOLOR_RED, VCOLOR_BLACK);
+	term_write_cstring("OS");
+	term_set_color(VCOLOR_WHITE, VCOLOR_BLACK);
+	term_write_cstring("]> ");
+}
 
-//init buffer with ' '
-	for (sizet i = 0; i < TERMHEIGHT; i++)
+void kernel_process(char* com)
+{
+
+}
+
+void kernel_test_input(void)
+{
+	char lk = 0;
+	char ch = 0;
+	char kc = 0;
+	uint32t cw = 0x00000000;
+	uint32t kw = 0xEFFFFFFF;
+	uint32t st = 0x00000FFF;
+	uint32t spt = 0x005FFFFF;
+	char com[25];
+	
+	do
 	{
-		for (sizet j = 0; j < TERMWIDTH; j++)
+		kc = kernel_get_input();
+		if (kc == lk)
 		{
-			g_termBuffer[j+TERMWIDTH] = g_termColor | ' ';
+			cw += st;
+			if (cw < kw) continue;
+			else kernel_sleep(spt);
 		}
-	}
-}
-
-void term_write_char(char _c)
-{
-	if (_c == '\n')
-	{
-		g_termColumn=0;
-		g_termRow++;
-	}
-	else
-	{
-		g_termBuffer[(g_termRow * TERMWIDTH) + g_termColumn] = g_termColor | _c;
-		if (++g_termColumn == TERMWIDTH)// if x pos is about to pass terminal width
+		else
 		{
-			g_termColumn = 0;
-			if (++g_termRow == TERMHEIGHT)// if y pos is about to pass terminal height
-				g_termRow = 0;
-		}	
-	}
-}
-
-void term_write(const char* _c, sizet _len)
-{
-	for (sizet i = 0; i < _len; i++)
-		term_write_char(_c[i]);
-}
-
-void term_write_cstring(const char* _c)
-{
-	sizet _len = t_strlen(_c);
-	term_write(_c, _len);
+			cw = 0x00000000;
+		}
+		if (kc == KEY_ENTER)
+		{
+			term_write_char('\n');
+			kernel_ps1();
+		}
+		else if (kc == KEY_RIGHT)
+		{
+			g_termColumn++;
+			term_update_cursor();
+		}
+		if (kc == KEY_LEFT)
+		{
+			g_termColumn--;
+			term_update_cursor();
+		}
+		if (kc == KEY_UP)
+		{
+			g_termRow--;
+			term_update_cursor();
+		}
+		if (kc == KEY_DOWN)
+		{
+			g_termRow++;
+			term_update_cursor();
+		}
+		if (kc == KEY_BACKSPACE)
+		{
+			g_termColumn--;
+			term_write_char(' ');
+			g_termColumn--;
+			term_update_cursor();
+		}
+		else
+		{
+			ch = keyboard_ascii_to_char(kc);
+			term_write_char(ch);
+		}
+		lk = kc;
+		//kernel_sleep(st);
+	}while(1);
 }
 
 extern void kmain()
 {
 	init_term();
-	term_write_cstring("Welcome to ddmOS.\n\n[ddmOS]> _");
+	term_write_cstring("Welcome to ddmOS.\n\n");
+	kernel_ps1();
+	kernel_test_input();
 }
