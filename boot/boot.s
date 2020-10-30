@@ -20,7 +20,7 @@ boot:
 	int 0x13 ; 
 	cli
 
-	lgdt [gdt_pointer] ; gets gdt table pointer
+	lgdt [gdt_descr] ; gets gdt table pointer
 	mov eax, cr0 ; load reg cr0
 	or eax, 0x1 ; set protected move bit on reg cr0
 	mov cr0, eax
@@ -35,8 +35,9 @@ boot:
 	jmp CODE_SEG:bootr ; goto code
 	
 
-start_gdt:
-	dq 0x0
+gdt_start:
+	dd 0x0
+	dd 0x0
 gdt_code:
 	dw 0xFFFF
 	dw 0x0
@@ -51,14 +52,14 @@ gdt_data:
 	db 10010010b
 	db 11001111b
 	db 0x0
-end_gdt:
-gdt_pointer:
-	dw end_gdt - start_gdt
-	dd start_gdt
+gdt_end:
+gdt_descr:
+	dw gdt_end - gdt_start
+	dd gdt_start
 disk:
 	db 0x0
-CODE_SEG equ gdt_code - start_gdt
-DATA_SEG equ gdt_data - start_gdt
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
 
 
 times 510 - ($-$$) db 0 ; padding for the 510 bytes
@@ -67,21 +68,8 @@ dw 0xaa55 ; when bios sees this is says it is bootable
 
 copy_target:
 bits 32
-;	more: db "Here is more text past the 512 byte mark yoooo!",0
 
 bootr:
-;	mov esi, more
-;	mov ebx, 0xb8000
-;
-;.loop:                     ; print loop
-;	lodsb
-;	or al, al ; if al == 0
-;	jz halt ; then end as msg is null termainting
-;	or eax, 0x0F00
-;	mov word [ebx], ax
-;	add ebx, 2
-;	jmp .loop
-;halt:
 	mov esp, kstack_top
 	extern kmain ; load kernal main function
 	call kmain ; run kernal main function

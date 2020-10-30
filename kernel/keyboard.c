@@ -1,5 +1,31 @@
 #include "../include/kernel/keyboard.h"
 
+void init_keyboard(void)
+{
+	system_outb(0x21, 0xFD);
+}
+
+void keyboard_interrupt_handler(void)
+{
+	char kc;
+
+	system_outb(0x20, 0x20);//eoi
+
+	uint8t status = system_inb(KB_STATUS_PORT);
+
+	if (status & 0x01)
+	{
+		kc = system_inb(KB_DATA_PORT);
+		if (kc < 0) return;
+		if (kc == KEY_RETURN)
+		{
+			term_write_char('\n');
+			return;
+		}
+		term_write_char(kc);
+	}
+}
+
 char keyboard_ascii_to_char(uint8t _kc)
 {
 	switch (_kc)

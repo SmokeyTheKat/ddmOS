@@ -2,6 +2,7 @@
 #define __ddcDef__ 1
 
 
+
 typedef enum DOStatus DOStatus;
 typedef enum DODelete DODelete;
 enum DOStatus { DOS_INACTIVE=0, DOS_ACTIVE, DOS_DELETED };
@@ -18,6 +19,9 @@ typedef unsigned long int       uint32t;
 typedef unsigned long long int  uint64t;
 typedef unsigned long long int  sizet;
 
+
+#include "ddcLib/make.h"
+
 #ifndef lambda
 	#define lambda(lambda$_ret, lambda$_args, lambda$_body)\
 	({\
@@ -26,6 +30,20 @@ typedef unsigned long long int  sizet;
 	&amp;lambda$__anon$;\
 	})
 	#endif
+#ifndef make
+	#define make(t,s) ((t*)get_memroy(s*sizeof(t)))
+	#endif
+#ifndef makea
+	#define makea(t,s) ((t*)free_memroy(s*sizeof(t)))
+	#endif
+#ifndef makep
+	#define makep(t) ((t*)get_memroy(sizeof(t)))
+	#endif
+#ifndef raze
+	#define raze(t) (free_memory(t))
+	#endif
+
+
 
 #ifndef __RUN_ERROR
 	//int __RUN_ERROR = 0;

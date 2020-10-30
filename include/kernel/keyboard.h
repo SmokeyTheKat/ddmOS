@@ -2,11 +2,13 @@
 #define __ddmos_keyboard_h__
 
 #include "../ddcDef.h"
+#include "tty.h"
 
-#define KEYBOARD_PORT 0x60
+#define KB_DATA_PORT 0x60
+#define KB_STATUS_PORT 0x64
 
-
-
+extern void keyboard_interrupt_handler(void);
+void init_keyboard(void);
 char keyboard_ascii_to_char(uint8t);
 
 #define KEY_A 0x1E
@@ -71,6 +73,7 @@ char keyboard_ascii_to_char(uint8t);
 #define KEY_DOWN 0x50
 #define KEY_END 0x4F
 #define KEY_ENTER 0x1C
+#define KEY_RETURN 0x1C
 #define KEY_ESC 0x01
 #define KEY_HOME 0x47
 #define KEY_INSERT 0x52

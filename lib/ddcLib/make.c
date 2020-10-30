@@ -1,69 +1,75 @@
 #include "../../include/ddcLib/make.h"
 
-typedef struct memoryData memoryData;
-
 static uint8t* memspace;
 
-struct memoryData
+/*
+typedef struct memdesc memdesc;
+
+
+struct memdesc
 {
 	uint64t memSpot;
 	sizet size;
 	bool used;
 	bool inited;
-	memoryData* next;
+	memdesc* next;
 };
 
-memoryData* memfoot;
+memdesc* memfoot;
 
-__attribute__((constructor)) void init_memspace(void)
+memdesc make_memdesc(void)
 {
-	memoryData ft;
-	ft.memSpot = 0;
-	ft.size = 0;
-	ft.used = false;
-	ft.inited = true;
-	ft.next = nullptr;
-	memfoot = &ft;
-}
-
-memoryData* make_get_free(sizet _size)
-{
-	memoryData* _p = memfoot;
-	uint8t coff = 0;
-	while (_p->used != false)
-	{
-		coff = _p->size + _p->size;
-		_p = _p->next;
-	}
-	_p->used = true;
-	_p->size = _size;
-	_p->memSpot = coff;
-	if (_p->inited != true)
-	{
-		memoryData ft;
-		ft.memSpot = 0;
-		ft.size = 0;
-		ft.used = false;
-		ft.inited = true;
-		ft.next = nullptr;
-		_p->next = &ft;
-	}
-	return _p;
-}
-sizet sp = 0;
-void* make(sizet _size)
-{
-	memoryData* _f = make_get_free(_size);
-	void* _o = (void*)&(memspace[_f->memSpot]);
+	memdesc _o;
+	_o.inited = true;
+	_o.used = false;
+	_o.memSpot = null;
+	_o.next = nullptr;
 	return _o;
 }
 
-void raze(void* _mem)
+__attribute__((constructor)) void init_memspace(void)
 {
-	memoryData* _p = memfoot;
+	(*memfoot) = make_memdesc();
+}
+
+memdesc* make_get_free(sizet _size)
+{
+	memdesc* _p = memfoot;
+	uint64t coff = 0;
+	while(_p->used != false)
+	{
+		coff = _p->used + _p->size;
+		_p = _p->next;
+	}
+	if (_p->inited != true)
+	{
+		*(_p) = make_memdesc();
+		_p->used = true;
+	}
+	_p->memSpot = coff;
+	return _p;
+}
+*/
+sizet sp = 0;
+void* get_memroy(sizet _size)
+{
+	//memdesc* _f = make_get_free(_size);
+	void* _o = (void*)&(memspace[sp]);
+	sp += _size;
+	return _o;
+}
+
+void free_memory(void* _mem)
+{
+	char c = *((char*)_mem);
+	if (c=='0')
+		return;
+/*
+	memdesc* _p = memfoot;
 	while (_p->memSpot != _mem)
 	{
 	}
 	_p->used = false;
 	_p->size = 0;
+*/
 }

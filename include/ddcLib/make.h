@@ -3,8 +3,8 @@
 
 #include "../ddcDef.h"
 
-void* make(sizet _size);
-void raze(void* _mem);
+void* get_memroy(sizet _size);
+void free_memory(void* _mem);
 
 
 #endif

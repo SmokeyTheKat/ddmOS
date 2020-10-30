@@ -5,8 +5,10 @@
 #include "tty.h"
 #include "keyboard.h"
 #include "system.h"
+#include "interrupt.h"
+#include "gdt.h"
 
-extern void kmain();// kernel main function
+extern void kmain(void);// kernel main function
 uint8t kernel_inb(uint16t _port);
 void kernel_outb(uint16t _port, uint8t _v);
 void kernel_wait_io(uint32t _timerc);
