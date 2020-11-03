@@ -54,7 +54,7 @@ gdt_data:
 	db 0x0
 gdt_end:
 gdt_descr:
-	dw gdt_end - gdt_start
+	dw (gdt_end - gdt_start) + 1
 	dd gdt_start
 disk:
 	db 0x0

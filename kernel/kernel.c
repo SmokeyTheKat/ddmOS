@@ -25,7 +25,6 @@ void kernel_ps1(void)
 	term_write_cstring("]> ");
 }
 
-
 #include "../include/ddcLib/make.h"
 extern void kmain(void)
 {
@@ -33,11 +32,12 @@ extern void kmain(void)
 	term_write_cstring("Welcome to ddmOS.\n\n");
 	kernel_ps1();
 
-	init_gdt();
+	//init_gdt();
 	//init_idt();
 	//init_isrs();
 	//init_irq();
 	//init_keyboard();
+
 
 	for(;;) asm volatile("hlt");
 }

@@ -15,43 +15,66 @@ struct idtEntry
 	uint8t zero;
 	uint8t flags;
 }__attribute__((packed));
-struct idtPtr
-{
-	uint16t limit;
-	uint16t base;
-}__attribute__((packed));
 
 extern void keyboard_interrupt(void);
 
-void idt_set_gate(uint8t _v, uint32t _b, uint16t _s, uint8t _f);
-void init_idt(void);
-extern void idt_load(uint32t* idtPtr);
+void init_idt();
+extern void load_idt(uint32t*);
 
-void irq_add_handler(int _irq, void(*_h)(struct regs* _r));
-void irq_remove_handler(int _irq);
-void irq_remap(void);
-void init_irq(void);
-extern void irq_handler(struct regs* _r);
 
+
+
+extern int irq0(void);
+extern int irq1(void);
+extern int irq2(void);
+extern int irq3(void);
+extern int irq4(void);
+extern int irq5(void);
+extern int irq6(void);
+extern int irq7(void);
+extern int irq8(void);
+extern int irq9(void);
+extern int irq10(void);
+extern int irq11(void);
+extern int irq12(void);
+extern int irq13(void);
+extern int irq14(void);
+extern int irq15(void);
+
+
+
+
+
+
+void irq0_handler(void);
+void irq1_handler(void);
+void irq2_handler(void);
+void irq3_handler(void);
+void irq4_handler(void);
+void irq5_handler(void);
+void irq6_handler(void);
+void irq7_handler(void);
+void irq8_handler(void);
+void irq9_handler(void);
+void irq10_handler(void);
+void irq11_handler(void);
+void irq12_handler(void);
+void irq13_handler(void);
+void irq14_handler(void);
+void irq15_handler(void);
+
+
+
+
+
+
+
+/*
 void init_isrs(void);
 extern void fault_handler(struct regs* _r);
 
-extern void irq0(void);
-extern void irq1(void);
-extern void irq2(void);
-extern void irq3(void);
-extern void irq4(void);
-extern void irq5(void);
-extern void irq6(void);
-extern void irq7(void);
-extern void irq8(void);
-extern void irq9(void);
-extern void irq10(void);
-extern void irq11(void);
-extern void irq12(void);
-extern void irq13(void);
-extern void irq14(void);
-extern void irq15(void);
+
+
 
 extern void isr0(void);
 extern void isr1(void);
@@ -85,7 +108,7 @@ extern void isr28(void);
 extern void isr29(void);
 extern void isr30(void);
 extern void isr31(void);
-
+*/
 
 
 

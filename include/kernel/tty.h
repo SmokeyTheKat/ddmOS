@@ -29,6 +29,7 @@ enum VColor{
 	VCOLOR_WHITE = 0x0F00
 };
 
+
 sizet t_strlen(const char* _c);// temporary strlen func
 void term_set_color(VColor fg, VColor bg);
 void term_enable_cursor(void);
