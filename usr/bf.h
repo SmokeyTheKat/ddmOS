@@ -119,6 +119,7 @@ int bf_compute(const char* v)
 			{
 				int_to_cstring(p[po], ch, 8);
 				term_write_cstring(ch);
+				term_write_char('\n');
 				break;
 			}
 			case 'P':
