@@ -1,15 +1,10 @@
 //kernel.h    the main kernel script
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 #include "../include/kernel/kernel.h"
+#include "../include/kernel/tty.h"
+#include "../include/kernel/keyboard.h"
+#include "../include/kernel/system.h"
+#include "../include/kernel/interrupt.h"
+#include "../include/kernel/serial.h"
 
 volatile unsigned char g_scanCodeState;
 
@@ -29,15 +24,21 @@ void kernel_ps1(void)
 extern void kmain(void)
 {
 	init_term();
+	term_write_cstring("Initializing VGA drivers...\n");
+
+	term_write_cstring("Readying serial communication on COM1...\n");
+	//init_serial(PORT_COM1);
+
+	term_write_cstring("Initializing interrupt descriptor table...\n");
+	init_idt();
+
+	term_write_cstring("Initializing keyboard layouts...\n");
+	init_keyboard();
+
+	term_write_cstring("Starting ddmOS interrupter...\n\n");
+
+
 	term_write_cstring("Welcome to ddmOS.\n\n");
 	kernel_ps1();
-
-	//init_gdt();
-	//init_idt();
-	//init_isrs();
-	//init_irq();
-	//init_keyboard();
-
-
 	for(;;) asm volatile("hlt");
 }

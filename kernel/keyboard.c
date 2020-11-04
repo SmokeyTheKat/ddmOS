@@ -1,9 +1,23 @@
 #include "../include/kernel/keyboard.h"
 
+#define DDSH_BUFFER_SIZE 100
+char term_ddsh_buffer[DDSH_BUFFER_SIZE];
+int term_ddsh_buffer_pos;
+
+void ddsh_buffer_clear(void)
+{
+	for (int i = 0; i < DDSH_BUFFER_SIZE; i++)
+		term_ddsh_buffer[i] = '\0';
+	term_ddsh_buffer_pos = 0;
+}
+
 void init_keyboard(void)
 {
 	system_outb(0x21, 0xFD);
+	interrupt_set_handler(1, keyboard_interrupt_handler);
+	ddsh_buffer_clear();
 }
+
 
 void keyboard_interrupt_handler(void)
 {
@@ -20,9 +34,25 @@ void keyboard_interrupt_handler(void)
 		if (kc == KEY_RETURN)
 		{
 			term_write_char('\n');
+			ddsh_interrupt(term_ddsh_buffer);
+			ddsh_buffer_clear();
 			return;
 		}
-		term_write_char(kc);
+		if (kc == KEY_BACKSPACE)
+		{
+			if (term_ddsh_buffer_pos == 0) return;
+			g_termColumn--;
+			term_write_char(' ');
+			g_termColumn--;
+			term_update_cursor();
+
+			term_ddsh_buffer[term_ddsh_buffer_pos-1] = '\0';
+			term_ddsh_buffer_pos--;
+			return;
+		}
+		term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char(kc);
+		term_ddsh_buffer_pos++;
+		term_write_char(keyboard_ascii_to_char(kc));
 	}
 }
 
@@ -56,6 +86,10 @@ char keyboard_ascii_to_char(uint8t _kc)
 		case KEY_X: return 'X';
 		case KEY_Y: return 'Y';
 		case KEY_Z: return 'Z';
+		case KEY_DOT: return '.';
+		case KEY_FORESLHASH: return '/';
+		case KEY_BACKSLASH: return '\\';
+		case KEY_COMMA: return ',';
 		case KEY_SPACE: return ' ';
 		case KEY_0: return '0';
 		case KEY_1: return '1';

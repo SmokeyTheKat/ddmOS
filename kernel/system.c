@@ -19,6 +19,20 @@ void system_await_input(void)
 			"2:");
 }
 
+void system_halt(void)
+{
+	asm volatile("hlt;");
+}
+
+void system_reboot(void)
+{
+	uint8t _g = 0x02;
+	while (_g & 0x02)
+		_g = system_inb(0x64);
+	system_outb(0x64, 0xFE);
+	system_halt();
+}
+
 uint64t system_get_rdtsc(void)
 {
 	uint32t _l;

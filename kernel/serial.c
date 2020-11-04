@@ -1,6 +1,5 @@
 #include "../include/kernel/serial.h"
-#include "../include/kernel/system.h"
-
+/*
 void init_serial(uint16t cport)
 {
 	system_outb(cport + 1, 0x00);
@@ -33,3 +32,4 @@ void serial_write(char c, uint16t cport)
 	while (!serial_transmit_is_empty(cport));
 	system_outb(cport, c);
 }
+*/

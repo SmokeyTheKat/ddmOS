@@ -11,7 +11,7 @@ boot:
 	mov [disk], dl ; disk from bios
 
 	mov ah, 0x2 ; read avaible sectors
-	mov al, 6 ; sectors to load
+	mov al, 8 ; sectors to load
 	mov ch, 0 ; index
 	mov dh, 0 ; head 
 	mov cl, 2 ; sector
@@ -21,6 +21,7 @@ boot:
 	cli
 
 	lgdt [gdt_descr] ; gets gdt table pointer
+	sti ; enable interrupts
 	mov eax, cr0 ; load reg cr0
 	or eax, 0x1 ; set protected move bit on reg cr0
 	mov cr0, eax
