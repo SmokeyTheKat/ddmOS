@@ -1,4 +1,5 @@
 #include "../include/kernel/ddsh.h"
+#include "../usr/bf.h"
 
 bool ddsh_compare(const char* _a, const char* _b, sizet _la, sizet _lb)
 {
@@ -33,6 +34,11 @@ void ddsh_interrupt(char* _v)
 	if (ddsh_compare("SMOKEY ITS DINNER TIME", _v, 22, _lv))
 	{
 		term_write_cstring("MEOW! MEOW! MEOW! IM HUNGURY!");
+		term_write_char('\n');
+	}
+	if (ddsh_compare("BF:", _v, 3, 3))
+	{
+		bf_compute(_v);
 		term_write_char('\n');
 	}
 	kernel_ps1();

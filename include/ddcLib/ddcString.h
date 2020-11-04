@@ -42,7 +42,6 @@ void ddString_push_char_back(ddString* _d, const char _c);
 void ddString_push_char_front(ddString* _d, const char _c);
 int ddString_to_int(const ddString _ds);
 
-static int __floatTdsCount(int number, int count);
 void cstring_get_length(const char* _c, ddsize* _l);
 void cstring_copy(char* _d, const char* _s, ddsize _len);
 void cstring_copy_offset(char* _d, const char* _s, ddsize _do, ddsize _so, ddsize _l);

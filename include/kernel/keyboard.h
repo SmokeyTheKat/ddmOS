@@ -12,6 +12,7 @@
 extern void keyboard_interrupt_handler(void);
 void init_keyboard(void);
 char keyboard_ascii_to_char(uint8t);
+char keyboard_ascii_to_char_shift(uint8t);
 
 #define KEY_A 0x1E
 #define KEY_B 0x30

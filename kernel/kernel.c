@@ -6,6 +6,8 @@
 #include "../include/kernel/interrupt.h"
 #include "../include/kernel/serial.h"
 
+#include "../include/ddcLib/ddcString.h"
+
 volatile unsigned char g_scanCodeState;
 
 void kernel_ps1(void)
@@ -36,7 +38,6 @@ extern void kmain(void)
 	init_keyboard();
 
 	term_write_cstring("Starting ddmOS interrupter...\n\n");
-
 
 	term_write_cstring("Welcome to ddmOS.\n\n");
 	kernel_ps1();

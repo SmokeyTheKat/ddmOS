@@ -2,22 +2,19 @@
 
 void cstring_get_length(const char* _c, ddsize* _l)
 {
-	//for (*_l = 0; _c[*_l] != '\0'; (*_l)++);
+	for (*_l = 0; _c[*_l] != '\0'; (*_l)++);
 }
 void cstring_copy(char* _d, const char* _s, ddsize _len)
 {
-/*
 	for (ddsize i = 0; i < _len; i++)
 	{
 		*_d = *_s;
 		_d++;
 		_s++;
 	}
-*/
 }
 void cstring_copy_offset(char* _d, const char* _s, ddsize _do, ddsize _so, ddsize _l)
 {
-/*
 	_d += _do;
 	_s += _so;
 	for (ddsize i = 0; i < _l; i++)
@@ -26,11 +23,9 @@ void cstring_copy_offset(char* _d, const char* _s, ddsize _do, ddsize _so, ddsiz
 		_d++;
 		_s++;
 	}
-*/
 }
 bool cstring_compare(const char* _d, const char* _s)
 {
-/*
 	ddsize _dl;
 	cstring_get_length(_d, &_dl);
 	ddsize _sl;
@@ -41,14 +36,7 @@ bool cstring_compare(const char* _d, const char* _s)
 		if (_d[i] != _s[i])  return false;
 	}
 	return true;
-*/
 }
-
-
-
-
-
-
 
 
 void ddString_copy(ddString* _d, const ddString _s)
@@ -69,8 +57,7 @@ void ddString_resize(ddString* _d, ddsize _nl)
 	_d->capacity = _nl;
 	_d->cstr = _t;
 }
-/////////////////
-/*
+
 void ddString_add(ddString* _d, const ddString _s)
 {
 	char* _n = make(char, _d->length + _s.length);
@@ -160,8 +147,7 @@ void ddString_push_front(ddString* _d, const ddString _s)
 	_d->cstr = _t;
 	_d->status = DOS_ACTIVE;
 }
-*/
-////////////////////////////
+
 void ddString_push_char_front(ddString* _d, const char _c)
 {
 	if (_d->capacity < _d->length + 1)
