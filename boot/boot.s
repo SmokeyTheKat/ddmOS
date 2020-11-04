@@ -11,7 +11,7 @@ boot:
 	mov [disk], dl ; disk from bios
 
 	mov ah, 0x2 ; read avaible sectors
-	mov al, 8 ; sectors to load
+	mov al, 32 ; sectors to load
 	mov ch, 0 ; index
 	mov dh, 0 ; head 
 	mov cl, 2 ; sector
