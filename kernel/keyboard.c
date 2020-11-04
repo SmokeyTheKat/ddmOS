@@ -53,6 +53,21 @@ void keyboard_interrupt_handler(void)
 			ddsh_buffer_clear();
 			return;
 		}
+		if (kc == KEY_RIGHT)
+		{
+			g_termColumn++;
+			term_ddsh_buffer_pos++;
+			term_update_cursor();
+			return;
+		}
+		if (kc == KEY_LEFT)
+		{
+			if (term_ddsh_buffer_pos == 0) return;
+			g_termColumn--;
+			term_ddsh_buffer_pos--;
+			term_update_cursor();
+			return;
+		}
 		if (kc == KEY_BACKSPACE)
 		{
 			if (term_ddsh_buffer_pos == 0) return;
@@ -118,6 +133,8 @@ char keyboard_ascii_to_char(uint8t _kc)
 		case KEY_COMMA: return ',';
 		case KEY_SPACE: return ' ';
 		case KEY_SEMICOLON: return ';';
+		case KEY_SQUARE_OPEN_BRACKET: return '[';
+		case KEY_SQUARE_CLOSE_BRACKET: return ']';
 		case KEY_0: return '0';
 		case KEY_1: return '1';
 		case KEY_2: return '2';
@@ -169,6 +186,8 @@ char keyboard_ascii_to_char_shift(uint8t _kc)
 		case KEY_COMMA: return '<';
 		case KEY_SPACE: return ' ';
 		case KEY_SEMICOLON: return ':';
+		case KEY_SQUARE_OPEN_BRACKET: return '{';
+		case KEY_SQUARE_CLOSE_BRACKET: return '}';
 		case KEY_0: return ')';
 		case KEY_1: return '!';
 		case KEY_2: return '@';

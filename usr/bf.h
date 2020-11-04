@@ -49,8 +49,12 @@ int bf_compute(const char* v)
 	int p[500] = {0};
 	char ch[8];
 	int po = 0;
+	int ifp = -1;
+	bool skg = false;
 	for (int i = 3; i < l; i++)
 	{
+		if (skg && v[i] != ']') continue;
+		else if (skg && v[i] == ']') { skg = false; continue; };
 		switch (v[i])
 		{
 			case 'A':
@@ -68,6 +72,19 @@ int bf_compute(const char* v)
 			{
 				if (po >= MSIZE) err("OUT OF BOUNDS");
 				po++;
+				break;
+			}
+
+			case '[':
+			{
+				ifp = i;
+				if (p[po] == 0) skg = true;
+				break;
+			}
+			case ']':
+			{
+				i = ifp - 1;
+				continue;
 				break;
 			}
 
