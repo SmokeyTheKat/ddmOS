@@ -45,6 +45,8 @@ int ddString_to_int(const ddString _ds);
 void cstring_get_length(const char* _c, ddsize* _l);
 void cstring_copy(char* _d, const char* _s, ddsize _len);
 void cstring_copy_offset(char* _d, const char* _s, ddsize _do, ddsize _so, ddsize _l);
+void cstring_insert_char_at(char* _d, char _c, ddsize _i,  ddsize _l);
+void cstring_delete_at(char* _d, ddsize _i,  ddsize _l);
 bool cstring_compare(const char* _d, const char* _s);
 void __cstring_copy(char* _d, const char* _s, ddsize _len);
 void __cstring_copy_offset(char* _d, const char* _s, ddsize _do, ddsize _so, ddsize _l);

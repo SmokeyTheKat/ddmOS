@@ -7,7 +7,9 @@
 #include "./kernel.h"
 
 
+void init_ddsh(void);
 void ddsh_interrupt(char* _v);
+char* ddsh_history_get(int d);
 
 
 

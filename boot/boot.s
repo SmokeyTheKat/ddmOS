@@ -5,7 +5,7 @@ boot:
 	mov ax, 0x2401 ; 
 	int 0x15 ; enable a20 line
 
-	mov ax, 0x3 ; mode 3
+	mov ax, 0x13 ; mode 3
 	int 0x10 ; vga text mode 3
 
 	mov [disk], dl ; disk from bios
@@ -34,6 +34,7 @@ boot:
 	mov ss, ax
 
 	jmp CODE_SEG:bootr ; goto code
+	
 	
 
 gdt_start:

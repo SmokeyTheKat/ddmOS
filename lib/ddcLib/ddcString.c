@@ -38,6 +38,22 @@ bool cstring_compare(const char* _d, const char* _s)
 	return true;
 }
 
+void cstring_delete_at(char* _d, ddsize _i,  ddsize _l)
+{
+	for (ddsize i = _i; i < _l; i++)
+	{
+		_d[i] = _d[i+1];
+	}
+}
+
+void cstring_insert_char_at(char* _d, char _c, ddsize _i,  ddsize _l)
+{
+	for (ddsize i = _l; i > _i; i--)
+	{
+		_d[i] = _d[i-1];
+	}
+	_d[_i] = _c;
+}
 
 void ddString_copy(ddString* _d, const ddString _s)
 {

@@ -144,6 +144,11 @@ int bf_compute(const char* v)
 				term_write_char((char)(p[po]+48));
 				break;
 			}
+			case 'T':
+			{
+				p[po] *= 10;
+				break;
+			}
 		}
 	}
 	return 0;

@@ -51,6 +51,11 @@ void system_sleep(uint32t _t)
 	}
 }
 
+void system_set_vga_mode(uint8t _move)
+{
+	//asm volatile("mov 
+}
+
 
 //temp memset
 void* memset(void* _d, int8t _v, sizet _c)

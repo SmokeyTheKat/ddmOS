@@ -1,4 +1,5 @@
 #include "../include/kernel/keyboard.h"
+#include "../include/ddcLib/ddcString.h"
 
 #define DDSH_BUFFER_SIZE 100
 char term_ddsh_buffer[DDSH_BUFFER_SIZE];
@@ -53,9 +54,38 @@ void keyboard_interrupt_handler(void)
 			ddsh_buffer_clear();
 			return;
 		}
+		if (kc == KEY_UP)
+		{
+			g_termXPos = 0;
+			term_delete_line();
+			kernel_ps1();
+
+			char* ch = ddsh_history_get(1);
+			ddsize chlen = 0;
+			cstring_get_length(ch, &chlen);
+			term_ddsh_buffer_pos = chlen;
+			cstring_copy(term_ddsh_buffer, ch, chlen);
+
+			term_write_cstring(ch);
+			return;
+		}
+		if (kc == KEY_DOWN)
+		{
+			g_termXPos = 0;
+			term_delete_line();
+			kernel_ps1();
+			char* ch = ddsh_history_get(1);
+			ddsize chlen = 0;
+			cstring_get_length(ch, &chlen);
+			term_ddsh_buffer_pos = chlen;
+			cstring_copy(term_ddsh_buffer, ch, chlen);
+
+			term_write_cstring(ch);
+			return;
+		}
 		if (kc == KEY_RIGHT)
 		{
-			g_termColumn++;
+			g_termXPos++;
 			term_ddsh_buffer_pos++;
 			term_update_cursor();
 			return;
@@ -63,7 +93,7 @@ void keyboard_interrupt_handler(void)
 		if (kc == KEY_LEFT)
 		{
 			if (term_ddsh_buffer_pos == 0) return;
-			g_termColumn--;
+			g_termXPos--;
 			term_ddsh_buffer_pos--;
 			term_update_cursor();
 			return;
@@ -71,26 +101,42 @@ void keyboard_interrupt_handler(void)
 		if (kc == KEY_BACKSPACE)
 		{
 			if (term_ddsh_buffer_pos == 0) return;
-			g_termColumn--;
-			term_write_char(' ');
-			g_termColumn--;
+			cstring_delete_at(term_ddsh_buffer, term_ddsh_buffer_pos-1, DDSH_BUFFER_SIZE);
+			term_delete_line();
+			int ogtx = g_termXPos;
+			g_termXPos = 0;
+			kernel_ps1();
+			term_write_cstring(term_ddsh_buffer);
+			g_termXPos = ogtx-1;
 			term_update_cursor();
-
-			term_ddsh_buffer[term_ddsh_buffer_pos-1] = '\0';
 			term_ddsh_buffer_pos--;
 			return;
 		}
 		if (shiftd)
 		{
-			term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char_shift(kc);
+			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char_shift(kc);
+			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char_shift(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
 			term_ddsh_buffer_pos++;
-			term_write_char(keyboard_ascii_to_char_shift(kc));
+			term_delete_line();
+			int ogtx = g_termXPos;
+			g_termXPos = 0;
+			kernel_ps1();
+			term_write_cstring(term_ddsh_buffer);
+			g_termXPos = ogtx+1;
+			term_update_cursor();
 		}
 		else
 		{
-			term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char(kc);
+			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char(kc);
+			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
 			term_ddsh_buffer_pos++;
-			term_write_char(keyboard_ascii_to_char(kc));
+			term_delete_line();
+			int ogtx = g_termXPos;
+			g_termXPos = 0;
+			kernel_ps1();
+			term_write_cstring(term_ddsh_buffer);
+			g_termXPos = ogtx+1;
+			term_update_cursor();
 		}
 	}
 }

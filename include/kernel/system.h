@@ -10,6 +10,7 @@ uint64t system_get_rdtsc(void);
 void system_sleep(uint32t _t);
 void system_halt(void);
 void system_reboot(void);
+void system_set_vga_mode(uint8t _move);
 void* memset(void* _d, int8t _v, sizet _c);
 
 struct regs
