@@ -67,6 +67,39 @@ struct vgaFont
 	uint8t D7[8];
 	uint8t D8[8];
 	uint8t D9[8];
+
+	uint8t explpnt[8];
+	uint8t questmk[8];
+	uint8t dot[8];
+	uint8t comma[8];
+	uint8t scolon[8];
+	uint8t colon[8];
+	uint8t dquote[8];
+	uint8t quote[8];
+	uint8t fslash[8];
+	uint8t bslash[8];
+	uint8t opbracket[8];
+	uint8t cpbracket[8];
+	uint8t osbracket[8];
+	uint8t csbracket[8];
+	uint8t ocbracket[8];
+	uint8t ccbracket[8];
+	uint8t otbracket[8];
+	uint8t ctbracket[8];
+
+	uint8t at[8];
+	uint8t hashtag[8];
+	uint8t moneysign[8];
+	uint8t percent[8];
+	uint8t caret[8];
+	uint8t amp[8];
+	uint8t star[8];
+	uint8t aposth[8];
+	uint8t tilde[8];
+	uint8t dash[8];
+	uint8t underscore[8];
+	uint8t plus[8];
+	uint8t equals[8];
 };
 
 

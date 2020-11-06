@@ -53,14 +53,63 @@ extern void kmain(void)
 	//term_write_cstring("Welcome to ddmOS.\n\n");
 	//kernel_ps1();
 
-	vga_draw_char(g_vgaFont.W, 0,  0, 32);
-	vga_draw_char(g_vgaFont.I, 6,  0, 32);
-	vga_draw_char(g_vgaFont.L, 12, 0, 32);
-	vga_draw_char(g_vgaFont.L, 18, 0, 32);
-	vga_draw_char(g_vgaFont.I, 24, 0, 32);
-	vga_draw_char(g_vgaFont.A, 30, 0, 32);
-	vga_draw_char(g_vgaFont.M, 36, 0, 32);
+	int ccc = 0;
+	vga_draw_char(g_vgaFont.hashtag, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.L, ccc, 4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.L, ccc, 4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.O, ccc, 4, 45);
+	ccc+=5;
+	ccc+=5;
+	vga_draw_char(g_vgaFont.T, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.R, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
+	ccc+=5;
+	ccc+=5;
+	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.O, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.W, ccc,  4, 45);
+	ccc+=5;
+	ccc+=5;
+	vga_draw_char(g_vgaFont.A, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.R, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
+	ccc+=5;
+	ccc+=5;
+	vga_draw_char(g_vgaFont.Y, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.O, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.U, ccc,  4, 45);
+	ccc+=5;
+	vga_draw_char(g_vgaFont.questmk, ccc,  4, 45);
+	ccc+=5;
+	ccc+=5;
 
+/*
+
+
+	for (int i = 0; i < 100; i++)
+		for (int j = 0; j < 100; j++)
+			vga_set_pixel(i, j, i+j);
+
+*/
 
 
 	for(;;) asm volatile("hlt");
