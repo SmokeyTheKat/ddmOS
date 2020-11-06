@@ -72,7 +72,7 @@ struct vgaFont
 
 void init_fonts(void);
 
-extern struct vgaFont vgaFontDefault;
+extern struct vgaFont g_vgaFont;
 
 
 

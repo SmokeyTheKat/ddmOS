@@ -1,4 +1,4 @@
-#include "../include/kernel/tty.h"
+#include "../../include/kernel/tty.h"
 
 
 static void err(const char* msg)

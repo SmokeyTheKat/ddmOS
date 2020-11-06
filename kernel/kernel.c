@@ -30,18 +30,6 @@ typedef unsigned char byte;
 
 int cur;
 
-void draw_char(uint8t* v)
-{
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			if (((v[i] >> j) & 1U) == 1) vga_set_pixel(cur+j, i, j+i);
-		}
-	}
-	cur+=7;
-}
-
 extern void kmain(void)
 {
 	//init_term();
@@ -65,13 +53,13 @@ extern void kmain(void)
 	//term_write_cstring("Welcome to ddmOS.\n\n");
 	//kernel_ps1();
 
-	draw_char(vgaFontDefault.W);
-	draw_char(vgaFontDefault.I);
-	draw_char(vgaFontDefault.L);
-	draw_char(vgaFontDefault.L);
-	draw_char(vgaFontDefault.I);
-	draw_char(vgaFontDefault.A);
-	draw_char(vgaFontDefault.M);
+	vga_draw_char(g_vgaFont.W, 0,  0, 32);
+	vga_draw_char(g_vgaFont.I, 6,  0, 32);
+	vga_draw_char(g_vgaFont.L, 12, 0, 32);
+	vga_draw_char(g_vgaFont.L, 18, 0, 32);
+	vga_draw_char(g_vgaFont.I, 24, 0, 32);
+	vga_draw_char(g_vgaFont.A, 30, 0, 32);
+	vga_draw_char(g_vgaFont.M, 36, 0, 32);
 
 
 

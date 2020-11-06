@@ -1,5 +1,5 @@
 #include "../include/kernel/ddsh.h"
-#include "../usr/bf.h"
+#include "../usr/include/bf.h"
 
 char commHistory[5][100];
 
