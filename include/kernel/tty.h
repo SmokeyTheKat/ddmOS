@@ -1,49 +1,46 @@
 #ifndef __ddmos_tty_h__
-#define __ddmos_tty_h__ 1
+#define __ddmos_tty_h__
 
-#include "../ddcDef.h"
-#include "./system.h"
+#include "../ddcLib/ddcVec.h"
+#include "./vga.h"
+#include "./fonts.h"
+#include "../ddcLib/ddcMake.h"
+#include "../ddcLib/ddcString.h"
 
-extern sizet g_termYPos;// current pos of cursor y
-extern sizet g_termXPos;// current pos of cursor x
-extern short g_termColor;// current terminal color
-extern short* g_termBuffer;// pointer to vga video memory
-
-typedef enum VColor VColor;
-enum VColor{
-	VCOLOR_BLACK = 0x0000,
-	VCOLOR_BLUE = 0x0100,
-	VCOLOR_GREEN = 0x0200,
-	VCOLOR_CYAN = 0x0300,
-	VCOLOR_RED = 0x0400,
-	VCOLOR_MAGENTA = 0x0500,
-	VCOLOR_BROWN = 0x0600,
-	VCOLOR_LIGHT_GREY = 0x0700,
-	VCOLOR_DARK_GREY = 0x0800,
-	VCOLOR_LIGHT_BLUE = 0x0900,
-	VCOLOR_LIGHT_GREEN = 0x0A00,
-	VCOLOR_LIGHT_CYAN = 0x0B00,
-	VCOLOR_LIGHT_RED = 0x0C00,
-	VCOLOR_LIGHT_MAGENTA = 0x0D00,
-	VCOLOR_LIGHT_BROWN = 0x0E00,
-	VCOLOR_WHITE = 0x0F00
+struct ddtty
+{
+	ddIVec2 	cursorPos;
+	uint8t		cursorColor;
+	uint8t		cursorBGColor;
+	bool		cursorVisible;
+	uint8t		fgColor;
+	uint8t		bgColor;
+	ddIVec2 	textSize;
+	ddIVec2		position;
+	ddIVec2		size;
+	char*	  	textBuffer;
 };
 
 
-sizet t_strlen(const char* _c);// temporary strlen func
-void term_set_color(VColor fg, VColor bg);
-void term_enable_cursor(uint8t cs, uint8t ce);
-//void term_enable_cursor(void);
-void term_disable_cursor(void);
-void term_move_cursor(int x, int y);
-void term_update_cursor(void);
-void term_clear(void);
-void init_term(void);// initializes terminal
-void term_write_char(char _c);// prints char 
-void term_write(const char* _c, sizet _len);// writes char string
-void term_write_cstring(const char* _c);// gets leng of cstring then writes it
-void term_pop_top(void);
-void term_delete_line(void);
+struct ddtty make_ddtty(ddIVec2 _pos, ddIVec2 _size, ddIVec2 _ts, uint8t _fgc, uint8t _bgc);
+void raze_ddtty(struct ddtty* _dt);
+void ddtty_set_color(struct ddtty* _dt, uint8t _fgc, uint8t _bgc);
+void ddtty_cursor_enable(struct ddtty* _dt);
+void ddtty_cursor_disable(struct ddtty* _dt);
+void ddtty_cursor_update(struct ddtty* _dt);
+void ddtty_cursor_move_to(struct ddtty* _dt, int x, int y);
+void ddtty_draw_cursor(struct ddtty* _dt);
+void ddtty_undraw_cursor(struct ddtty* _dt);
+void ddtty_clear(struct ddtty* _dt);
+void ddtty_pop_top(struct ddtty* _dt);
+void ddtty_pop_bottom(struct ddtty* _dt);
+void ddtty_write_char(struct ddtty* _dt, char _c);
+void ddtty_write_cstring(struct ddtty* _dt, const char* _c);
+void ddtty_write(struct ddtty* _dt, const char* _cs, sizet _len);
+void ddtty_redraw(struct ddtty* _dt);
+void ddtty_redraw_line(struct ddtty* _dt, uint16t _li);
+void ddtty_delete_line(struct ddtty* _dt);
+
 
 
 #endif

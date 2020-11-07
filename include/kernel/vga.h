@@ -12,6 +12,6 @@ extern char* g_vgaBuffer;// pointer to vga video memory
 
 void init_vga(void);
 void vga_set_pixel(int x, int y, uint8t color);
-void vga_draw_char(uint8t* fontChar, int x, int y, uint8t c);
+void vga_draw_char(byte* fontChar, int x, int y, uint8t c);
 
 #endif

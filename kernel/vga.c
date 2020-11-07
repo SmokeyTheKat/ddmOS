@@ -12,7 +12,7 @@ void vga_set_pixel(int x, int y, uint8t c)
 	g_vgaBuffer[y*VGA_WIDTH+x] = c;
 }
 
-void vga_draw_char(uint8t* f, int x, int y, uint8t c)
+void vga_draw_char(byte* f, int x, int y, uint8t c)
 {
 	for (int i = 0; i < 4; i++)
 	{

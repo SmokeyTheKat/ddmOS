@@ -12,16 +12,16 @@
 
 volatile unsigned char g_scanCodeState;
 
-void kernel_ps1(void)
+void kernel_ps1(struct ddtty* _dt)
 {
-	term_set_color(VCOLOR_WHITE, VCOLOR_BLACK);
-	term_write_cstring("[");
-	term_set_color(VCOLOR_BLUE, VCOLOR_BLACK);
-	term_write_cstring("ddm");
-	term_set_color(VCOLOR_RED, VCOLOR_BLACK);
-	term_write_cstring("OS");
-	term_set_color(VCOLOR_WHITE, VCOLOR_BLACK);
-	term_write_cstring("]> ");
+	ddtty_set_color(_dt, 15, 0);
+	ddtty_write_cstring(_dt, "[");
+	ddtty_set_color(_dt, 48, 0);
+	ddtty_write_cstring(_dt, "ddm");
+	ddtty_set_color(_dt, 38, 0);
+	ddtty_write_cstring(_dt, "OS");
+	ddtty_set_color(_dt, 15, 0);
+	ddtty_write_cstring(_dt, "]> ");
 }
 
 #include "../include/ddcLib/make.h"
@@ -30,78 +30,35 @@ typedef unsigned char byte;
 
 int cur;
 
+struct ddtty g_mainTerm;
+
 extern void kmain(void)
 {
 	//init_term();
-	//term_write_cstring("Initializing VGA text drivers...\n");
-
 	init_vga();
 	init_fonts();
 
-	//term_write_cstring("Readying serial communication on COM1...\n");
+	g_mainTerm = make_ddtty(make_ddIVec2(0, 0), make_ddIVec2(320, 200), make_ddIVec2(64,40), 15, 0);
+	ddtty_write_cstring(&g_mainTerm , "Initializing VGA drivers...\n");
+	ddtty_write_cstring(&g_mainTerm , "Initializing ddtty...\n");
+	ddtty_write_cstring(&g_mainTerm , "Initializing system fonts...\n");
+
+
+	ddtty_write_cstring(&g_mainTerm , "Readying serial communication on COM1...\n");
 	init_serial(PORT_COM1);
 
-	//term_write_cstring("Initializing interrupt descriptor table...\n");
+	ddtty_write_cstring(&g_mainTerm , "Initializing interrupt descriptor table...\n");
 	init_idt();
 
-	//term_write_cstring("Initializing keyboard layouts...\n");
-	//init_keyboard();
+	ddtty_write_cstring(&g_mainTerm , "Initializing keyboard layouts...\n");
+	init_keyboard();
 
-	//term_write_cstring("Starting ddmOS interrupter...\n\n");
-	//init_ddsh();
+	ddtty_write_cstring(&g_mainTerm , "Starting ddmOS interrupter...\n\n");
+	init_ddsh();
 
-	//term_write_cstring("Welcome to ddmOS.\n\n");
-	//kernel_ps1();
+	ddtty_write_cstring(&g_mainTerm , "Welcome to ddmOS.\n\n");
 
-	int ccc = 0;
-	vga_draw_char(g_vgaFont.hashtag, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.L, ccc, 4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.L, ccc, 4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.O, ccc, 4, 45);
-	ccc+=5;
-	ccc+=5;
-	vga_draw_char(g_vgaFont.T, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.R, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
-	ccc+=5;
-	ccc+=5;
-	vga_draw_char(g_vgaFont.H, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.O, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.W, ccc,  4, 45);
-	ccc+=5;
-	ccc+=5;
-	vga_draw_char(g_vgaFont.A, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.R, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.E, ccc,  4, 45);
-	ccc+=5;
-	ccc+=5;
-	vga_draw_char(g_vgaFont.Y, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.O, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.U, ccc,  4, 45);
-	ccc+=5;
-	vga_draw_char(g_vgaFont.questmk, ccc,  4, 45);
-	ccc+=5;
-	ccc+=5;
-
+	kernel_ps1(&g_mainTerm );
 /*
 
 

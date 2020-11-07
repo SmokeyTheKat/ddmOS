@@ -8,6 +8,7 @@ typedef enum DODelete DODelete;
 enum DOStatus { DOS_INACTIVE=0, DOS_ACTIVE, DOS_DELETED };
 enum DODelete { DOD_MANUAL=0, DOD_AUTO };
 
+//types
 //ints
 typedef signed char             int8t;
 typedef signed int              int16t;
@@ -19,6 +20,11 @@ typedef unsigned long int       uint32t;
 typedef unsigned long long int  uint64t;
 typedef unsigned long long int  sizet;
 
+//other types
+typedef uint8t 			byte;
+typedef unsigned char		uchar;
+typedef uint16t 		lchar;
+typedef uint32t 		wchar;
 
 #include "ddcLib/make.h"
 

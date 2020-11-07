@@ -49,16 +49,16 @@ void keyboard_interrupt_handler(void)
 		if (kc < 0) return;
 		if (kc == KEY_RETURN)
 		{
-			term_write_char('\n');
+			ddtty_write_char(&g_mainTerm, '\n');
 			ddsh_interrupt(term_ddsh_buffer);
 			ddsh_buffer_clear();
 			return;
 		}
 		if (kc == KEY_UP)
 		{
-			g_termXPos = 0;
-			term_delete_line();
-			kernel_ps1();
+			g_mainTerm.cursorPos.x = 0;
+			ddtty_delete_line(&g_mainTerm);
+			kernel_ps1(&g_mainTerm);
 
 			char* ch = ddsh_history_get(1);
 			ddsize chlen = 0;
@@ -66,49 +66,49 @@ void keyboard_interrupt_handler(void)
 			term_ddsh_buffer_pos = chlen;
 			cstring_copy(term_ddsh_buffer, ch, chlen);
 
-			term_write_cstring(ch);
+			ddtty_write_cstring(&g_mainTerm, ch);
 			return;
 		}
 		if (kc == KEY_DOWN)
 		{
-			g_termXPos = 0;
-			term_delete_line();
-			kernel_ps1();
+			g_mainTerm.cursorPos.x = 0;
+			ddtty_delete_line(&g_mainTerm);
+			kernel_ps1(&g_mainTerm);
 			char* ch = ddsh_history_get(1);
 			ddsize chlen = 0;
 			cstring_get_length(ch, &chlen);
 			term_ddsh_buffer_pos = chlen;
 			cstring_copy(term_ddsh_buffer, ch, chlen);
 
-			term_write_cstring(ch);
+			ddtty_write_cstring(&g_mainTerm, ch);
 			return;
 		}
 		if (kc == KEY_RIGHT)
 		{
-			g_termXPos++;
+			ddtty_cursor_move_to(&g_mainTerm, g_mainTerm.cursorPos.x+1,
+						g_mainTerm.cursorPos.y);
 			term_ddsh_buffer_pos++;
-			term_update_cursor();
 			return;
 		}
 		if (kc == KEY_LEFT)
 		{
 			if (term_ddsh_buffer_pos == 0) return;
-			g_termXPos--;
-			term_ddsh_buffer_pos--;
-			term_update_cursor();
+			ddtty_cursor_move_to(&g_mainTerm, g_mainTerm.cursorPos.x+1,
+						g_mainTerm.cursorPos.y);
 			return;
 		}
 		if (kc == KEY_BACKSPACE)
 		{
 			if (term_ddsh_buffer_pos == 0) return;
 			cstring_delete_at(term_ddsh_buffer, term_ddsh_buffer_pos-1, DDSH_BUFFER_SIZE);
-			term_delete_line();
-			int ogtx = g_termXPos;
-			g_termXPos = 0;
-			kernel_ps1();
-			term_write_cstring(term_ddsh_buffer);
-			g_termXPos = ogtx-1;
-			term_update_cursor();
+			ddtty_delete_line(&g_mainTerm);
+			int ogtx = g_mainTerm.cursorPos.x;
+			ddtty_cursor_move_to(&g_mainTerm, 0,
+						g_mainTerm.cursorPos.y);
+			kernel_ps1(&g_mainTerm);
+			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
+			ddtty_cursor_move_to(&g_mainTerm, ogtx-1,
+						g_mainTerm.cursorPos.y);
 			term_ddsh_buffer_pos--;
 			return;
 		}
@@ -117,26 +117,26 @@ void keyboard_interrupt_handler(void)
 			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char_shift(kc);
 			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char_shift(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
 			term_ddsh_buffer_pos++;
-			term_delete_line();
-			int ogtx = g_termXPos;
-			g_termXPos = 0;
-			kernel_ps1();
-			term_write_cstring(term_ddsh_buffer);
-			g_termXPos = ogtx+1;
-			term_update_cursor();
+			ddtty_delete_line(&g_mainTerm);
+			int ogtx = g_mainTerm.cursorPos.x;
+			g_mainTerm.cursorPos.x = 0;
+			kernel_ps1(&g_mainTerm);
+			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
+			ddtty_cursor_move_to(&g_mainTerm, ogtx+1,
+						g_mainTerm.cursorPos.y);
 		}
 		else
 		{
 			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char(kc);
 			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
 			term_ddsh_buffer_pos++;
-			term_delete_line();
-			int ogtx = g_termXPos;
-			g_termXPos = 0;
-			kernel_ps1();
-			term_write_cstring(term_ddsh_buffer);
-			g_termXPos = ogtx+1;
-			term_update_cursor();
+			ddtty_delete_line(&g_mainTerm);
+			int ogtx = g_mainTerm.cursorPos.x;
+			g_mainTerm.cursorPos.x = 0;
+			kernel_ps1(&g_mainTerm);
+			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
+			ddtty_cursor_move_to(&g_mainTerm, ogtx+1,
+						g_mainTerm.cursorPos.y);
 		}
 	}
 }

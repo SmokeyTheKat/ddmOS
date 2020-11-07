@@ -1,14 +1,17 @@
 #ifndef __ddmos_kernel_h__
 #define __ddmos_kernel_h__
 
+#include "./tty.h"
 #include "../ddcDef.h"
+
+extern struct ddtty g_mainTerm;
 
 extern void kmain(void);// kernel main function
 void kernel_wait_io(uint32t _timerc);
 void kernel_sleep(uint32t _timerc);
 char kernel_get_input(void);
 void kernel_test_input(void);
-void kernel_ps1(void);
+void kernel_ps1(struct ddtty* _dt);
 
 
 #endif

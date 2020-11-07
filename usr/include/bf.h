@@ -1,9 +1,10 @@
+#include "../../include/kernel/kernel.h"
 #include "../../include/kernel/tty.h"
 
 
 static void err(const char* msg)
 {
-	term_write_cstring(msg);
+	ddtty_write_cstring(&g_mainTerm, msg);
 }
 
 static int str_len(const char* _c)
@@ -129,19 +130,19 @@ int bf_compute(const char* v)
 
 			case '.':
 			{
-				term_write_char((char)(p[po]));
+				ddtty_write_char(&g_mainTerm, (char)(p[po]));
 				break;
 			}
 			case '?':
 			{
 				int_to_cstring(p[po], ch, 8);
-				term_write_cstring(ch);
-				term_write_char('\n');
+				ddtty_write_cstring(&g_mainTerm, ch);
+				ddtty_write_char(&g_mainTerm, '\n');
 				break;
 			}
 			case 'P':
 			{
-				term_write_char((char)(p[po]+48));
+				ddtty_write_char(&g_mainTerm, (char)(p[po]+48));
 				break;
 			}
 			case 'T':

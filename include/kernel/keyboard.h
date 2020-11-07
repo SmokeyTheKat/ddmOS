@@ -2,6 +2,7 @@
 #define __ddmos_keyboard_h__
 
 #include "../ddcDef.h"
+#include "./kernel.h"
 #include "./tty.h"
 #include "./interrupt.h"
 #include "./ddsh.h"
