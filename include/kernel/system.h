@@ -5,7 +5,11 @@
 
 
 uint8t system_inb(uint16t port);
+uint16t system_inw(uint16t port);
+uint32t system_ind(uint16t port);
 void system_outb(uint16t port, uint8t value);
+void system_outw(uint16t port, uint16t value);
+void system_outd(uint16t port, uint32t value);
 void system_halt(void);
 
 void system_await_input(void);

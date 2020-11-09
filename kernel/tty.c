@@ -70,6 +70,11 @@ void ddtty_write_char(struct ddtty* _dt, char _c)
 		_dt->cursorPos.x = 0;
 		_dt->cursorPos.y++;
 	}
+	else if (_c == '\b')
+	{
+		_dt->cursorPos.x--;
+		vga_draw_char(g_vgaFont[226], _dt->cursorPos.x * 5, _dt->cursorPos.y * 5, _dt->bgColor);
+	}
 	else
 	{
 		vga_draw_char(g_vgaFont[(int)_c], _dt->cursorPos.x * 5, _dt->cursorPos.y * 5, _dt->cursorColor);

@@ -6,10 +6,34 @@ uint8t system_inb(uint16t port)
 	asm volatile("inb %1, %0" : "=a"(output) : "d"(port));
 	return output;
 }
+/*
+uint16t system_inw(uint16t port)
+{
+	uint16t output;
+	asm volatile("inw %1, %0" : "=a"(output) : "d"(port));
+	return output;
+}
+*/
+uint32t system_inl(uint16t port)
+{
+	uint32t output;
+	asm volatile("inl %1, %0" : "=a"(output) : "d"(port));
+	return output;
+}
 
 void system_outb(uint16t port, uint8t value)
 {
 	asm volatile("outb %0, %1" : : "a"(value), "d"(port));
+}
+/*
+void system_outw(uint16t port, uint16t value)
+{
+	asm volatile("outw %0, %1" : : "a"(value), "d"(port));
+}
+*/
+void system_outd(uint16t port, uint32t value)
+{
+	asm volatile("outl %0, %1" : : "a"(value), "d"(port));
 }
 
 void system_halt(void)

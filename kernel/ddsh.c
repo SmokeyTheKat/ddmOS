@@ -50,6 +50,10 @@ char* ddsh_history_get(int d)
 	return commHistory[hisPos];
 }
 
+void ddsh_interrupt_key(uint8t key)
+{
+	ddtty_write_char(&g_mainTerm, key);
+}
 
 void ddsh_interrupt(char* _v)
 {
@@ -73,7 +77,7 @@ void ddsh_interrupt(char* _v)
 	if (ddsh_compare("POWEROFF", _v, 8, _lv))
 	{
 		ddtty_write_cstring(&g_mainTerm, "SHUTTING DOWN...");
-		//system_outb(0xB004, 0x2000);
+		system_outd(0xB004, 0x2000);
 		ddtty_write_char(&g_mainTerm, '\n');
 	}
 	if (ddsh_compare("REBOOT", _v, 6, _lv))

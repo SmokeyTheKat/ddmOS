@@ -59,6 +59,8 @@ extern void kmain(void)
 	ddtty_write_cstring(&g_mainTerm , "Welcome to ddmOS.\n\n");
 
 	kernel_ps1(&g_mainTerm );
+
+	ddtty_write_cstring(&g_mainTerm, "123456789\b\b");
 /*
 
 

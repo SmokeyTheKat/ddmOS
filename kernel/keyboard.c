@@ -21,34 +21,45 @@ void init_keyboard(void)
 }
 
 static bool shiftd = false;
-
-// if true then return from user function
-static bool keyboard_handle_shift(uint8t keyStatus)
-{
-	if (keyStatus == 0x2A)
-	{
-		shiftd = true;
-		return true;
-	}
-	else if (keyStatus & 0x80)
-	{
-		shiftd = false;
-		return false;
-	}
-	return false;
-}
+static void (*keyboardFocusFunc)(uint8t) = ddsh_interrupt_key;
 
 void keyboard_interrupt_handler(void)
 {
-	uint8t status = system_inb(KB_STATUS_PORT);
-	char kc = system_inb(KB_DATA_PORT);
+	uint8t key = system_inb(KB_STATUS_PORT);
+	ddtty_write_cstring(&g_mainTerm, "key pressed: ");
+	ddtty_write_char(&g_mainTerm, key);
 
-	// if the shift key is pressed there is no need to process anything else
-	bool returnShift = keyboard_handle_shift(kc);
-	if (returnShift) return;
-	if (!(status & 0x01)) return;
-	if (kc < 0) return;
-
+	if (!(key & 0x01)) return;
+	
+	switch (key)
+	{
+		case 0x2A:
+			shiftd = true;
+			break;
+		case 0xAA:
+			shiftd = false;
+			break;
+		case 0x1C:
+			(*keyboardFocusFunc)(0x1C);
+			break;
+		case 0xE:
+			(*keyboardFocusFunc)('\b');
+			break;
+		case 0xF:
+			for (int i = 0; i < 4; i++)
+				(*keyboardFocusFunc)(' ');
+			break;
+			
+		default:
+			if (key < 128)
+			{
+				if (shiftd)
+					(*keyboardFocusFunc)(keyboard_ascii_to_char_shift(key));
+				else
+					(*keyboardFocusFunc)(keyboard_ascii_to_char(key));
+			}
+			break;
+	}
 }
 
 char keyboard_ascii_to_char(uint8t keyCode)
