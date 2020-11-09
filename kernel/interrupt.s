@@ -131,7 +131,7 @@ irq15:
   iret
  
 load_idt:
-	mov edx, [esp + 4]
+	mov edx, [esp + 4]; get idt from c function call
 	lidt [edx]
 	sti
 	ret

@@ -3,14 +3,18 @@
 
 #include "../ddcDef.h"
 
-uint8t system_inb(uint16t _port);
-void system_outb(uint16t _port, uint8t _v);
+
+uint8t system_inb(uint16t port);
+void system_outb(uint16t port, uint8t value);
+void system_halt(void);
+
 void system_await_input(void);
 uint64t system_get_rdtsc(void);
-void system_sleep(uint32t _t);
-void system_halt(void);
+void system_sleep(uint32t sleepTime);
 void system_reboot(void);
-void system_set_vga_mode(uint8t _move);
+//void system_set_vga_mode(uint8t _move);
+
+//get rid of this yo
 void* memset(void* _d, int8t _v, sizet _c);
 
 struct regs

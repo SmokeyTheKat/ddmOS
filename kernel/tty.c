@@ -58,8 +58,8 @@ void ddtty_delete_line(struct ddtty* _dt)
 	for (int y = 0; y < 5; y++)
 		for (int x = 0; x < _dt->size.x; x++)
 			vga_set_pixel(_dt->position.x + x,
-					_dt->position.y + (_dt->cursorPos.y * _dt->size.y) + y,
-					_dt->fgColor);
+					(_dt->cursorPos.y * _dt->size.x) + y,
+					_dt->bgColor);
 }
 
 void ddtty_write_char(struct ddtty* _dt, char _c)
@@ -114,18 +114,18 @@ void ddtty_clear(struct ddtty* _dt)
 void ddtty_pop_top(struct ddtty* _dt)
 {
 	char line[_dt->textSize.x*3];
-	for (sizet i = 1; i < _dt->textSize.y; i++)
+	for (int i = 1; i < _dt->textSize.y; i++)
 	{
-		for (sizet j = 0; j < _dt->textSize.x*3; j++)
+		for (int j = 0; j < _dt->textSize.x*3; j++)
 		{
 			line[j] = _dt->textBuffer[(i*_dt->textSize.x*3) + j];
 		}
-		for (sizet j = 0; j < _dt->textSize.x*3; j++)
+		for (int j = 0; j < _dt->textSize.x*3; j++)
 		{
 			_dt->textBuffer[((i-1)*_dt->textSize.x*3) + j] = line[j];
 		}
 	}
-	for (sizet j = 0; j < _dt->textSize.x*3; j++)
+	for (int j = 0; j < _dt->textSize.x*3; j++)
 	{
 		_dt->textBuffer[((_dt->textSize.y-1) * _dt->textSize.x*3) + j] = 0;
 	}

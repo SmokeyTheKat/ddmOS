@@ -279,6 +279,11 @@ void init_fonts(void)
 
 //spec
 
+	g_vgaFont[0][0] = 0;
+	g_vgaFont[0][1] = 0;
+	g_vgaFont[0][2] = 0;
+	g_vgaFont[0][3] = 0;
+
 	g_vgaFont[32][0] = 0;
 	g_vgaFont[32][1] = 0;
 	g_vgaFont[32][2] = 0;
@@ -483,6 +488,11 @@ void init_fonts(void)
 	g_vgaFont[48][1] = 5;
 	g_vgaFont[48][2] = 5;
 	g_vgaFont[48][3] = 2;
+
+	g_vgaFont[226][0] = 15;
+	g_vgaFont[226][1] = 15;
+	g_vgaFont[226][2] = 15;
+	g_vgaFont[226][3] = 15;
 
 
 }

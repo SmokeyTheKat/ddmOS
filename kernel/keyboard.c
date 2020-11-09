@@ -2,6 +2,7 @@
 #include "../include/ddcLib/ddcString.h"
 
 #define DDSH_BUFFER_SIZE 100
+
 char term_ddsh_buffer[DDSH_BUFFER_SIZE];
 int term_ddsh_buffer_pos;
 
@@ -21,129 +22,38 @@ void init_keyboard(void)
 
 static bool shiftd = false;
 
+// if true then return from user function
+static bool keyboard_handle_shift(uint8t keyStatus)
+{
+	if (keyStatus == 0x2A)
+	{
+		shiftd = true;
+		return true;
+	}
+	else if (keyStatus & 0x80)
+	{
+		shiftd = false;
+		return false;
+	}
+	return false;
+}
 
 void keyboard_interrupt_handler(void)
 {
-	char kc;
-
-	system_outb(0x20, 0x20);//eoi
-
 	uint8t status = system_inb(KB_STATUS_PORT);
-	kc = system_inb(KB_DATA_PORT);
+	char kc = system_inb(KB_DATA_PORT);
 
-	if (!(status & 0x80))
-	{
-		if (kc == 42)
-		{
-			shiftd = true;
-			return;
-		}
-	}
-	if (kc & 0x80)
-	{
-		shiftd = false;
-	}
+	// if the shift key is pressed there is no need to process anything else
+	bool returnShift = keyboard_handle_shift(kc);
+	if (returnShift) return;
+	if (!(status & 0x01)) return;
+	if (kc < 0) return;
 
-	if (status & 0x01)
-	{
-		if (kc < 0) return;
-		if (kc == KEY_RETURN)
-		{
-			ddtty_write_char(&g_mainTerm, '\n');
-			ddsh_interrupt(term_ddsh_buffer);
-			ddsh_buffer_clear();
-			return;
-		}
-		if (kc == KEY_UP)
-		{
-			g_mainTerm.cursorPos.x = 0;
-			ddtty_delete_line(&g_mainTerm);
-			kernel_ps1(&g_mainTerm);
-
-			char* ch = ddsh_history_get(1);
-			ddsize chlen = 0;
-			cstring_get_length(ch, &chlen);
-			term_ddsh_buffer_pos = chlen;
-			cstring_copy(term_ddsh_buffer, ch, chlen);
-
-			ddtty_write_cstring(&g_mainTerm, ch);
-			return;
-		}
-		if (kc == KEY_DOWN)
-		{
-			g_mainTerm.cursorPos.x = 0;
-			ddtty_delete_line(&g_mainTerm);
-			kernel_ps1(&g_mainTerm);
-			char* ch = ddsh_history_get(1);
-			ddsize chlen = 0;
-			cstring_get_length(ch, &chlen);
-			term_ddsh_buffer_pos = chlen;
-			cstring_copy(term_ddsh_buffer, ch, chlen);
-
-			ddtty_write_cstring(&g_mainTerm, ch);
-			return;
-		}
-		if (kc == KEY_RIGHT)
-		{
-			ddtty_cursor_move_to(&g_mainTerm, g_mainTerm.cursorPos.x+1,
-						g_mainTerm.cursorPos.y);
-			term_ddsh_buffer_pos++;
-			return;
-		}
-		if (kc == KEY_LEFT)
-		{
-			if (term_ddsh_buffer_pos == 0) return;
-			ddtty_cursor_move_to(&g_mainTerm, g_mainTerm.cursorPos.x+1,
-						g_mainTerm.cursorPos.y);
-			return;
-		}
-		if (kc == KEY_BACKSPACE)
-		{
-			if (term_ddsh_buffer_pos == 0) return;
-			cstring_delete_at(term_ddsh_buffer, term_ddsh_buffer_pos-1, DDSH_BUFFER_SIZE);
-			ddtty_delete_line(&g_mainTerm);
-			int ogtx = g_mainTerm.cursorPos.x;
-			ddtty_cursor_move_to(&g_mainTerm, 0,
-						g_mainTerm.cursorPos.y);
-			kernel_ps1(&g_mainTerm);
-			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
-			ddtty_cursor_move_to(&g_mainTerm, ogtx-1,
-						g_mainTerm.cursorPos.y);
-			term_ddsh_buffer_pos--;
-			return;
-		}
-		if (shiftd)
-		{
-			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char_shift(kc);
-			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char_shift(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
-			term_ddsh_buffer_pos++;
-			ddtty_delete_line(&g_mainTerm);
-			int ogtx = g_mainTerm.cursorPos.x;
-			g_mainTerm.cursorPos.x = 0;
-			kernel_ps1(&g_mainTerm);
-			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
-			ddtty_cursor_move_to(&g_mainTerm, ogtx+1,
-						g_mainTerm.cursorPos.y);
-		}
-		else
-		{
-			//term_ddsh_buffer[term_ddsh_buffer_pos] = keyboard_ascii_to_char(kc);
-			cstring_insert_char_at(term_ddsh_buffer, keyboard_ascii_to_char(kc), term_ddsh_buffer_pos, DDSH_BUFFER_SIZE);
-			term_ddsh_buffer_pos++;
-			ddtty_delete_line(&g_mainTerm);
-			int ogtx = g_mainTerm.cursorPos.x;
-			g_mainTerm.cursorPos.x = 0;
-			kernel_ps1(&g_mainTerm);
-			ddtty_write_cstring(&g_mainTerm, term_ddsh_buffer);
-			ddtty_cursor_move_to(&g_mainTerm, ogtx+1,
-						g_mainTerm.cursorPos.y);
-		}
-	}
 }
 
-char keyboard_ascii_to_char(uint8t _kc)
+char keyboard_ascii_to_char(uint8t keyCode)
 {
-	switch (_kc)
+	switch (keyCode)
 	{
 		case KEY_A: return 'A';
 		case KEY_B: return 'B';
@@ -194,9 +104,9 @@ char keyboard_ascii_to_char(uint8t _kc)
 		default: return 0;
 	}
 }
-char keyboard_ascii_to_char_shift(uint8t _kc)
+char keyboard_ascii_to_char_shift(uint8t keyCode)
 {
-	switch (_kc)
+	switch (keyCode)
 	{
 		case KEY_A: return 'A';
 		case KEY_B: return 'B';
