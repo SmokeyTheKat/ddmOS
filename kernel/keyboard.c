@@ -1,36 +1,27 @@
 #include "../include/kernel/keyboard.h"
 #include "../include/ddcLib/ddcString.h"
 
-#define DDSH_BUFFER_SIZE 100
-
-char term_ddsh_buffer[DDSH_BUFFER_SIZE];
-int term_ddsh_buffer_pos;
-
-void ddsh_buffer_clear(void)
-{
-	for (int i = 0; i < DDSH_BUFFER_SIZE; i++)
-		term_ddsh_buffer[i] = '\0';
-	term_ddsh_buffer_pos = 0;
-}
+static bool shiftd = false;
+static void (*keyboardFocusFunc)(uint8t) = ddsh_interrupt_key;
+static bool keyboardFocusIsRaw = false;
 
 void init_keyboard(void)
 {
 	system_outb(0x21, 0xFD);
 	interrupt_set_handler(1, keyboard_interrupt_handler);
-	ddsh_buffer_clear();
 }
 
-static bool shiftd = false;
-static void (*keyboardFocusFunc)(uint8t) = ddsh_interrupt_key;
+void keyboard_set_focus(void(*focusFunc)(uint8t), bool isRawInput)
+{
+	keyboardFocusFunc = focusFunc;
+	keyboardFocusIsRaw = isRawInput;
+}
 
 void keyboard_interrupt_handler(void)
 {
-	uint8t key = system_inb(KB_STATUS_PORT);
-	ddtty_write_cstring(&g_mainTerm, "key pressed: ");
-	ddtty_write_char(&g_mainTerm, key);
+	if (keyboardFocusIsRaw) (*keyboardFocusFunc)(system_inb(KB_DATA_PORT));
+	uint8t key = system_inb(KB_DATA_PORT);
 
-	if (!(key & 0x01)) return;
-	
 	switch (key)
 	{
 		case 0x2A:
@@ -39,13 +30,13 @@ void keyboard_interrupt_handler(void)
 		case 0xAA:
 			shiftd = false;
 			break;
-		case 0x1C:
-			(*keyboardFocusFunc)(0x1C);
+		case KEY_ENTER:
+			(*keyboardFocusFunc)('\n');
 			break;
-		case 0xE:
+		case KEY_BACKSPACE:
 			(*keyboardFocusFunc)('\b');
 			break;
-		case 0xF:
+		case KEY_TAB:
 			for (int i = 0; i < 4; i++)
 				(*keyboardFocusFunc)(' ');
 			break;

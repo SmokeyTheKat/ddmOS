@@ -10,6 +10,8 @@
 
 #include "../include/ddcLib/ddcString.h"
 
+#include <stdint.h>
+
 volatile unsigned char g_scanCodeState;
 
 void kernel_ps1(struct ddtty* _dt)
@@ -34,7 +36,6 @@ struct ddtty g_mainTerm;
 
 extern void kmain(void)
 {
-	//init_term();
 	init_vga();
 	init_fonts();
 
@@ -59,17 +60,6 @@ extern void kmain(void)
 	ddtty_write_cstring(&g_mainTerm , "Welcome to ddmOS.\n\n");
 
 	kernel_ps1(&g_mainTerm );
-
-	ddtty_write_cstring(&g_mainTerm, "123456789\b\b");
-/*
-
-
-	for (int i = 0; i < 100; i++)
-		for (int j = 0; j < 100; j++)
-			vga_set_pixel(i, j, i+j);
-
-*/
-
 
 	for(;;) asm volatile("hlt");
 }

@@ -9,13 +9,14 @@ void vga_set_pixel(int x, int y, uint8t color)
 	g_vgaBuffer[y*VGA_WIDTH+x] = color;
 }
 
-void vga_draw_char(byte* charFont, int x, int y, uint8t color)
+void vga_draw_char(byte* charFont, int x, int y, uint8t fgColor, uint8t bgColor)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			if (((charFont[i] >> j) & 1U) == 1) vga_set_pixel(x+j, y+i, color);
+			if (((charFont[i] >> j) & 1U) == 1) vga_set_pixel(x+j, y+i, fgColor);
+			if (((charFont[i] >> j) & 1U) == 0) vga_set_pixel(x+j, y+i, bgColor);
 		}
 	}
 }

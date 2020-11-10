@@ -6,6 +6,7 @@
 #include "./fonts.h"
 #include "../ddcLib/ddcMake.h"
 #include "../ddcLib/ddcString.h"
+#include "../ddcLib/ddcMem.h"
 
 struct ddtty
 {
@@ -28,6 +29,7 @@ void ddtty_set_color(struct ddtty* _dt, uint8t _fgc, uint8t _bgc);
 void ddtty_cursor_enable(struct ddtty* _dt);
 void ddtty_cursor_disable(struct ddtty* _dt);
 void ddtty_cursor_update(struct ddtty* _dt);
+void ddtty_cursor_move(struct ddtty* _dt, int x, int y);
 void ddtty_cursor_move_to(struct ddtty* _dt, int x, int y);
 void ddtty_draw_cursor(struct ddtty* _dt);
 void ddtty_undraw_cursor(struct ddtty* _dt);
