@@ -1,8 +1,8 @@
 #include "../../include/ddcLib/ddcMake.h"
 
+/*
 static uint8t* memspace;
 
-/*
 typedef struct memdesc memdesc;
 
 
@@ -49,7 +49,6 @@ memdesc* make_get_free(sizet _size)
 	_p->memSpot = coff;
 	return _p;
 }
-*/
 sizet sp = 0;
 void* get_memroy(sizet _size)
 {
@@ -61,9 +60,9 @@ void* get_memroy(sizet _size)
 
 void free_memory(void* _mem)
 {
-	char c = *((char*)_mem);
-	if (c=='0')
-		return;
+	(void)_mem;
+	return;
+*/
 /*
 	memdesc* _p = memfoot;
 	while (_p->memSpot != _mem)
@@ -71,5 +70,5 @@ void free_memory(void* _mem)
 	}
 	_p->used = false;
 	_p->size = 0;
-*/
 }
+*/
