@@ -4,7 +4,9 @@
 #include "./tty.h"
 #include "../ddcDef.h"
 
-extern struct ddtty g_mainTerm;
+extern struct ddtty g_selectedTerm;
+extern struct ddtty g_kernelTerm1;
+extern struct ddtty g_kernelTerm2;
 
 extern void kmain(void);// kernel main function
 void kernel_wait_io(uint32t _timerc);
