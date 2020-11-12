@@ -10,6 +10,7 @@
 //
 //
 //
+/*
 
 #include "../include/kernel/tty.h"
 
@@ -163,3 +164,4 @@ void term_write_cstring(const char* _c)
 	sizet _len = t_strlen(_c);
 	term_write(_c, _len);
 }
+*/
