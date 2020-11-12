@@ -8,7 +8,7 @@
 
 
 void init_ddsh(void);
-void ddsh_interrupt(char* _v);
+void ddsh_interrupt(void);
 char* ddsh_history_get(int d);
 void ddsh_interrupt_key(uint8t key);
 
