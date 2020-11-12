@@ -26,7 +26,7 @@ typedef unsigned char		uchar;
 typedef uint16t 		lchar;
 typedef uint32t 		wchar;
 
-#include "ddcLib/make.h"
+#include "ddcLib/ddcMake.h"
 
 #ifndef lambda
 	#define lambda(lambda$_ret, lambda$_args, lambda$_body)\
@@ -37,16 +37,16 @@ typedef uint32t 		wchar;
 	})
 	#endif
 #ifndef make
-	#define make(t,s) ((t*)get_memroy(s*sizeof(t)))
+	#define make(t,s) ((t*)kernel_get_memroy(s*sizeof(t)))
 	#endif
 #ifndef makea
-	#define makea(t,s) ((t*)free_memroy(s*sizeof(t)))
+	#define makea(t,s) ((t*)kernel_free_memroy(s*sizeof(t)))
 	#endif
 #ifndef makep
-	#define makep(t) ((t*)get_memroy(sizeof(t)))
+	#define makep(t) ((t*)kernel_get_memroy(sizeof(t)))
 	#endif
 #ifndef raze
-	#define raze(t) (free_memory(t))
+	#define raze(t) (kernel_free_memory(t))
 	#endif
 
 
