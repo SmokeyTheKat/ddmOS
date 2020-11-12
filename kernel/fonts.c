@@ -444,6 +444,11 @@ void init_fonts(void)
 	g_vgaFont[49][2] = 2;
 	g_vgaFont[49][3] = 7;
 
+	g_vgaFont[39][0] = 2;
+	g_vgaFont[39][1] = 2;
+	g_vgaFont[39][2] = 0;
+	g_vgaFont[39][3] = 0;
+
 	g_vgaFont[50][0] = 3;
 	g_vgaFont[50][1] = 4;
 	g_vgaFont[50][2] = 2;
