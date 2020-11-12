@@ -82,8 +82,11 @@ void ddsh_interrupt()
 {
 	if (ddString_compare(buffer, make_constant_ddString("PRINT")))
 	{
-		ddtty_write_cstring(&g_selectedTerm, "OGMGOOG");
-		ddtty_write_char(&g_selectedTerm, '\n');
+		ddtty_write_cstring(&g_selectedTerm, "THE PRINT IS WORKING LOL\n");
+	}
+	if (ddString_compare(buffer, make_constant_ddString("HI")))
+	{
+		ddtty_write_cstring(&g_selectedTerm, "HI THERE HOW ARE YOU  :)\n");
 	}
 	if (ddString_compare(buffer, make_constant_ddString("CLEAR")))
 	{
@@ -97,6 +100,7 @@ void ddsh_interrupt()
 	{
 		ddtty_write_cstring(&g_selectedTerm, "SHUTTING DOWN...");
 		system_outd(0xB004, 0x2000);
+		system_outd(0x604, 0x2000);
 		ddtty_write_char(&g_selectedTerm, '\n');
 	}
 	if (ddString_compare(buffer, make_constant_ddString("REBOOT")))

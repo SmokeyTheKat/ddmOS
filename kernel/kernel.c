@@ -9,6 +9,7 @@
 #include "../include/kernel/fonts.h"
 
 #include "../include/ddcLib/ddcString.h"
+#include "../include/ddcDef.h"
 
 #include <stdint.h>
 
@@ -28,7 +29,6 @@ void kernel_ps1(struct ddtty* _dt)
 	ddtty_draw_cursor(_dt);
 }
 
-#include "../include/ddcLib/make.h"
 
 typedef unsigned char byte;
 

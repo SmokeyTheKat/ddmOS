@@ -3,8 +3,8 @@
 
 #include "../ddcDef.h"
 
-void* get_memroy(sizet _size);
-void free_memory(void* _mem);
+void* kernel_get_memroy(sizet _size);
+void kernel_free_memory(void* _mem);
 
 
 #endif

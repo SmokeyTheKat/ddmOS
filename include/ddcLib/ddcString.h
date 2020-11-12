@@ -40,6 +40,9 @@ void ddString_push_cstring_back(ddString* _d, const char* _ch);
 void ddString_push_cstring_front(ddString* _d, const char* _ch);
 void ddString_push_char_back(ddString* _d, const char _c);
 void ddString_push_char_front(ddString* _d, const char _c);
+void ddString_insert_char_at(ddString* _d, char _c, ddsize _i);
+void ddString_delete_at(ddString* _d, ddsize i);
+void ddString_pop_back(ddString* _d, ddsize _n);
 int ddString_to_int(const ddString _ds);
 
 void cstring_get_length(const char* _c, ddsize* _l);
