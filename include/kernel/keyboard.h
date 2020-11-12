@@ -58,6 +58,8 @@ char keyboard_ascii_to_char_shift(uint8t keyCode);
 #define KEY_SEMICOLON 0x27
 #define KEY_BACKSLASH 0x2B
 #define KEY_COMMA 0x33
+#define KEY_SINGLE_QUOTE 0x28
+#define KEY_SINGLE_QUOTE 0x28
 #define KEY_DOT 0x34
 #define KEY_FORESLHASH 0x35
 #define KEY_F1 0x3B

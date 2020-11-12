@@ -24,11 +24,31 @@ void keyboard_interrupt_handler(void)
 
 	switch (key)
 	{
+		case KEY_F1:
+			g_selectedTerm = g_kernelTerm1;
+			ddtty_redraw(&g_selectedTerm);
+			break;
+		case KEY_F2:
+			g_selectedTerm = g_kernelTerm2;
+			ddtty_redraw(&g_selectedTerm);
+			break;
 		case 0x2A:
 			shiftd = true;
 			break;
 		case 0xAA:
 			shiftd = false;
+			break;
+		case KEY_LEFT:
+			(*keyboardFocusFunc)(232);
+			break;
+		case KEY_RIGHT:
+			(*keyboardFocusFunc)(233);
+			break;
+		case KEY_UP:
+			(*keyboardFocusFunc)(234);
+			break;
+		case KEY_DOWN:
+			(*keyboardFocusFunc)(235);
 			break;
 		case KEY_ENTER:
 			(*keyboardFocusFunc)('\n');
@@ -85,6 +105,7 @@ char keyboard_ascii_to_char(uint8t keyCode)
 		case KEY_Z: return 'Z';
 		case KEY_DOT: return '.';
 		case KEY_EQUAL: return '=';
+		case KEY_SINGLE_QUOTE: return '\'';
 		case KEY_MINUS: return '-';
 		case KEY_FORESLHASH: return '/';
 		case KEY_BACKSLASH: return '\\';
@@ -138,6 +159,7 @@ char keyboard_ascii_to_char_shift(uint8t keyCode)
 		case KEY_Z: return 'Z';
 		case KEY_DOT: return '>';
 		case KEY_EQUAL: return '+';
+		case KEY_SINGLE_QUOTE: return '"';
 		case KEY_MINUS: return '_';
 		case KEY_FORESLHASH: return '?';
 		case KEY_BACKSLASH: return '|';
