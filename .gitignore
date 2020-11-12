@@ -1,6 +1,7 @@
 ./binutils-gdb/*
 ./build-gcc/*
 ./build-binutils/*
+./compiled/ddmOS.bin
 
 # Prerequisites
 *.d
