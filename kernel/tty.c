@@ -35,24 +35,25 @@ void ddtty_draw_cursor(struct ddtty* _dt)
 {
 	if (_dt->cursorVisible)
 		for (int i = 0; i < 5; i++)
-			vga_set_pixel((_dt->cursorPos.x*5)+i, (_dt->cursorPos.y*5)+4, _dt->cursorColor);
+			vga_set_pixel(_dt->position.x+(_dt->cursorPos.x*5)+i, _dt->position.y+(_dt->cursorPos.y*5)+4, _dt->cursorColor);
 }
 void ddtty_undraw_cursor(struct ddtty* _dt)
 {
 	if (_dt->cursorVisible)
 		for (int i = 0; i < 5; i++)
-			vga_set_pixel((_dt->cursorPos.x*5)+i, (_dt->cursorPos.y*5)+4, _dt->cursorBGColor);
+			vga_set_pixel(_dt->position.x+(_dt->cursorPos.x*5)+i, _dt->position.y+(_dt->cursorPos.y*5)+4, _dt->cursorBGColor);
 }
 
 void ddtty_cursor_move_to(struct ddtty* _dt, int x, int y)
 {
+	if (_dt->cursorPos.x + x < 0 && _dt->cursorPos.y + y == 0) return;
 	ddtty_undraw_cursor(_dt);
 	if (x >= _dt->textSize.x)
 	{
 		if (_dt->cursorPos.y+1 >= _dt->textSize.y)
 		{
 			_dt->cursorPos.x = 0;
-			//ddtty_pop_top(_dt);
+			ddtty_pop_top(_dt);
 		}
 		else
 		{
@@ -68,7 +69,14 @@ void ddtty_cursor_move_to(struct ddtty* _dt, int x, int y)
 	else
 	{
 		_dt->cursorPos.x = x;
-		_dt->cursorPos.y = y;
+		if (y >= _dt->textSize.y)
+		{
+			ddtty_pop_top(_dt);
+		}
+		else
+		{
+			_dt->cursorPos.y = y;
+		}
 		
 	}
 	ddtty_draw_cursor(_dt);
@@ -100,11 +108,11 @@ void ddtty_write_char(struct ddtty* _dt, char _c)
 	else if (_c == '\b')
 	{
 		ddtty_cursor_move_to(_dt, _dt->cursorPos.x-1, _dt->cursorPos.y);
-		vga_draw_char(g_vgaFont[(int)(' ')], _dt->cursorPos.x * 5, _dt->cursorPos.y * 5, _dt->fgColor, _dt->bgColor);
+		vga_draw_char(g_vgaFont[(int)(' ')], _dt->position.x+_dt->cursorPos.x * 5, _dt->position.y+_dt->cursorPos.y * 5, _dt->fgColor, _dt->bgColor);
 	}
 	else
 	{
-		vga_draw_char(g_vgaFont[(int)(_c)], _dt->cursorPos.x * 5, _dt->cursorPos.y * 5, _dt->cursorColor, _dt->cursorBGColor);
+		vga_draw_char(g_vgaFont[(int)(_c)], _dt->position.x+_dt->cursorPos.x * 5, _dt->position.y+_dt->cursorPos.y * 5, _dt->cursorColor, _dt->cursorBGColor);
 		_dt->textBuffer[(_dt->cursorPos.y * _dt->textSize.x*3) + (_dt->cursorPos.x*3) + 0] = _c;
 		_dt->textBuffer[(_dt->cursorPos.y * _dt->textSize.x*3) + (_dt->cursorPos.x*3) + 1] = (char)(_dt->cursorColor);
 		_dt->textBuffer[(_dt->cursorPos.y * _dt->textSize.x*3) + (_dt->cursorPos.x*3) + 2] = (char)(_dt->cursorBGColor);
@@ -132,7 +140,7 @@ void ddtty_clear(struct ddtty* _dt)
 			_dt->textBuffer[(y*_dt->textSize.x*3)+x] = 0;
 	for (int i = 0; i < _dt->size.y; i++)
 		for (int j = 0; j < _dt->size.x; j++)
-			vga_set_pixel(j, i, _dt->bgColor);
+			vga_set_pixel(_dt->position.x+j, _dt->position.y+i, _dt->bgColor);
 	ddtty_cursor_move_to(_dt, 0, 0);
 }
 
@@ -145,6 +153,10 @@ void ddtty_pop_top(struct ddtty* _dt)
 					(y*_dt->textSize.x*3)+(_dt->textSize.x*3),
 					_dt->textSize.x*3);
 	}
+	ddIVec2 popPos = _dt->cursorPos;
+	_dt->cursorPos.y = _dt->textSize.y-1;
+	ddtty_delete_line(_dt);
+	_dt->cursorPos = popPos;
 	ddtty_redraw(_dt);
 }
 void ddtty_redraw(struct ddtty* _dt)
