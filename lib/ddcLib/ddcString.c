@@ -177,6 +177,15 @@ void ddString_push_char_front(ddString* _d, const char _c)
 	_d->status = DOS_ACTIVE;
 }
 
+void ddString_pop_back(ddString* _d, ddsize _n)
+{
+	for (ddsize i = 1; i < _n+1; i++)
+	{
+		_d->cstr[_d->length-i] = '\0';
+	}
+	_d->length -= _n;
+}
+
 ddString make_ddString_from_int(int _v)
 {
 	if (_v == 0) return make_ddString("0");
@@ -198,6 +207,24 @@ ddString make_ddString_from_int(int _v)
 	return _o;
 }
 
+void ddString_delete_at(ddString* _d, ddsize i)
+{
+	for (; i < _d->length; i++)
+	{
+		_d->cstr[i] = _d->cstr[i+1];
+	}
+	_d->length--;
+}
+
+void ddString_insert_char_at(ddString* _d, char _c, ddsize _i)
+{
+	for (ddsize i = _d->length; i > _i; i--)
+	{
+		_d->cstr[i] = _d->cstr[i-1];
+	}
+	_d->cstr[_i] = _c;
+	_d->length++;
+}
 
 static int __floatTdsCount(int n, int c)
 {
