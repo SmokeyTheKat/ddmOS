@@ -26,7 +26,7 @@ void system_outb(uint16t port, uint8t value)
 	asm volatile("outb %0, %1" : : "a"(value), "d"(port));
 }
 /*
-void system_outw(uint16t port, uint16t value)
+void system_outw(uint16t port, int16t value)
 {
 	asm volatile("outw %0, %1" : : "a"(value), "d"(port));
 }
