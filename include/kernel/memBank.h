@@ -9,17 +9,17 @@ struct MBDN;
 
 struct memBank
 {
-	void* addr;
+	uint64t address;
 	uint64t size;
-	void* vaultAddr;
-	uint64t vaultLength;
+	uint64t vaultAddress;
+	uint64t vaultSize;
 	struct MBDN* headRepo;
 	bool isLocked;
 };
 
 struct memRepo
 {
-	void* address;
+	uint64t address;
 	uint64t size;
 	int32t uid;
 	bool isFree;
@@ -36,10 +36,13 @@ struct MBDN
 };
 
 void init_memBank(void);
-void memBank_get_real_addr(struct memBank bank, void* bankAddr);
-struct MBDN* memBank_get_free_repo(struct memBank bank);
+uint64t memBank_get_real_addr(struct memBank bank, uint64t bankAddr);
+struct MBDN* memBank_get_free_repo(struct memBank bank, uint64t size);
+struct MBDN* memBank_get_repo(struct memBank bank, uint64t size);
+void* memBank_get_memory(uint64t size);
+void memBank_free_memory(void* addr);
 
-struct memRepo make_memRepo(void* addr, uint64t size, int32t uid, bool locked);
+struct memRepo make_memRepo(uint64t addr, uint64t size, int32t uid, bool locked);
 
 struct MBDN make_MBDN(struct MBDN* next, struct MBDN* prev, struct memRepo repo);
 
