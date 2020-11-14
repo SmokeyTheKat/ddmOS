@@ -114,6 +114,11 @@ void ddsh_interrupt()
 		ddtty_write_cstring(&g_selectedTerm, "MEOW! MEOW! MEOW! IM HUNGURY!");
 		ddtty_write_char(&g_selectedTerm, '\n');
 	}
+	if (ddString_compare(buffer, make_constant_ddString("MAKE DDSTRING")))
+	{
+		make_ddString("GOMGOMGO");
+		ddtty_write_char(&g_selectedTerm, '\n');
+	}
 	if (buffer.cstr[0] == 'B' && buffer.cstr[1] == 'F' && buffer.cstr[2] == ':')
 	{
 		bf_compute(buffer.cstr);

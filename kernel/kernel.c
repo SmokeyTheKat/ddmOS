@@ -7,6 +7,7 @@
 #include "../include/kernel/serial.h"
 #include "../include/kernel/vga.h"
 #include "../include/kernel/fonts.h"
+#include "../include/kernel/memBank.h"
 
 #include "../include/ddcLib/ddcString.h"
 #include "../include/ddcDef.h"
@@ -40,6 +41,7 @@ struct ddtty g_kernelTerm2;
 
 extern void kmain(void)
 {
+	init_memBank();
 	init_vga();
 	init_fonts();
 
@@ -71,6 +73,7 @@ extern void kmain(void)
 
 	ddtty_write_cstring(&g_kernelTerm2, "STARTING KERNEL TERM 2\n\n");
 	ddtty_write_cstring(&g_kernelTerm2, "RUNNING TESTS...\n");
+/*
 
 	ddtty_write_cstring(&g_kernelTerm2, "S1 = MAKE(CHAR, 5) = \"TESTS\"\n");
 	char* s1 = make(char, 6);
@@ -97,7 +100,6 @@ extern void kmain(void)
 	ddtty_write_cstring(&g_kernelTerm2, "\"\n");
 
 	ddtty_write_cstring(&g_kernelTerm2, "RAZE(S2)\n");
-	raze(s2);
 
 	ddtty_write_cstring(&g_kernelTerm2, "S3 = MAKE(CHAR, 3) = \"RAP\"\n");
 	char* s3 = make(char, 4);
@@ -114,33 +116,62 @@ extern void kmain(void)
 	ddtty_write_cstring(&g_kernelTerm2, s2);
 	ddtty_write_cstring(&g_kernelTerm2, "\"\n");
 
+	raze(s1);
+	raze(s2);
+	raze(s3);
+
+	char* s0 = make(char, 30000);
+	char* s1 = make(char, 30000);
+	char* s2 = make(char, 30000);
+	raze(s2);
+	char* s3 = make(char, 300000);
+	raze(s3);
+	char* s4 = make(char, 30000);
+	raze(s4);
+	char* s5 = make(char, 30000);
+	raze(s5);
+	char* s6 = make(char, 3000);
+	raze(s6);
+	char* s7 = make(char, 30000);
+	raze(s7);
+	char* s8 = make(char, 300);
+	raze(s8);
+	char* s9 = make(char, 4);
+	raze(s9);
+	char* s10 = make(char, 4);
+	raze(s10);
+	char* s11 = make(char, 200);
+
+*/
 
 	kernel_ps1(&g_kernelTerm2);
 
 
 
-	ddtty_redraw(&g_selectedTerm);
+	//ddtty_redraw(&g_selectedTerm);
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING VGA DRIVERS...\n");
-	ddtty_write_cstring(&g_selectedTerm, "STARTING DDTTY...\n");
-	ddtty_write_cstring(&g_selectedTerm, "STARTING SYSTEM FONTS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING MEMORY BANK...\n");
+
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING VGA DRIVERS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING DDTTY...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING SYSTEM FONTS...\n");
 
 
-	ddtty_write_cstring(&g_selectedTerm, "READYING SERIAL COMS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "READYING SERIAL COMS...\n");
 	init_serial(PORT_COM1);
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING IDT...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING IDT...\n");
 	init_idt();
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING KEYBOARD LAYOUTS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING KEYBOARD LAYOUTS...\n");
 	init_keyboard();
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING DDMOS INTERRUPTER...\n\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING DDMOS INTERRUPTER...\n\n");
 	init_ddsh();
 
-	ddtty_write_cstring(&g_selectedTerm, "WELCOME TO DDMOS.\n\n");
+	//ddtty_write_cstring(&g_selectedTerm, "WELCOME TO DDMOS.\n\n");
 
-	kernel_ps1(&g_selectedTerm);
+	//kernel_ps1(&g_selectedTerm);
 
 	for(;;) asm volatile("hlt");
 }
