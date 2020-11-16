@@ -1,5 +1,5 @@
-#include "../include/kernel/keyboard.h"
-#include "../include/ddcLib/ddcString.h"
+#include "../../include/kernel/io/keyboard.h"
+#include "../../include/ddcLib/ddcString.h"
 
 static bool shiftd = false;
 static void (*keyboardFocusFunc)(uint8t) = ddsh_interrupt_key;

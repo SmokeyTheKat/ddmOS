@@ -106,7 +106,7 @@ typedef uint32t 		wchar;
 	#endif
 
 
-#include "./kernel/memBank.h"
+#include "./kernel/mm/memBank.h"
 
 
 

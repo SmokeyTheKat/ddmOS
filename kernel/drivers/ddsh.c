@@ -1,8 +1,8 @@
-#include "../include/kernel/ddsh.h"
-#include "../include/kernel/keyboard.h"
-#include "../include/ddcLib/ddcString.h"
-#include "../include/ddcLib/ddcMem.h"
-#include "../usr/include/bf.h"
+#include "../../include/kernel/drivers/ddsh.h"
+#include "../../include/kernel/io/keyboard.h"
+#include "../../include/ddcLib/ddcString.h"
+#include "../../include/ddcLib/ddcMem.h"
+#include "../../usr/include/bf.h"
 
 static ddString buffer;
 static int bufferPos = -1;

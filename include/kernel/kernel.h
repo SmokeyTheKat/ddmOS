@@ -1,7 +1,7 @@
 #ifndef __ddmos_kernel_h__
 #define __ddmos_kernel_h__
 
-#include "./tty.h"
+#include "./drivers/tty.h"
 #include "../ddcDef.h"
 
 extern struct ddtty g_selectedTerm;

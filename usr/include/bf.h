@@ -1,5 +1,5 @@
 #include "../../include/kernel/kernel.h"
-#include "../../include/kernel/tty.h"
+#include "../../include/kernel/drivers/tty.h"
 
 
 static void err(const char* msg)

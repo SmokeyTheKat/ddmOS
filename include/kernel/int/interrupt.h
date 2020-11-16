@@ -1,10 +1,10 @@
 #ifndef __ddmos_interrupt_h__
 #define __ddmos_interrupt_h__
 
-#include "../ddcDef.h"
-#include "system.h"
-#include "keyboard.h"
-#include "tty.h"
+#include "../../ddcDef.h"
+#include "../sys/system.h"
+#include "../io/keyboard.h"
+#include "../drivers/tty.h"
 
 #define IDT_SIZE 256
 

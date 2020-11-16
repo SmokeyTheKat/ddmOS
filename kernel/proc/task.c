@@ -1,6 +1,6 @@
-#include "../include/kernel/task.h"
-#include "../include/kernel/kernel.h"
-#include "../include/kernel/tty.h"
+#include "../../include/kernel/proc/task.h"
+#include "../../include/kernel/kernel.h"
+#include "../../include/kernel/drivers/tty.h"
 
 static struct task* activeTask;
 static struct task mainTask;

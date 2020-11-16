@@ -1,10 +1,10 @@
 #ifndef __ddmos_ddsh_h__
 #define __ddmos_ddsh_h__
 
-#include "./tty.h"
-#include "./system.h"
-#include "./keyboard.h"
-#include "./kernel.h"
+#include "../drivers/tty.h"
+#include "../sys/system.h"
+#include "../io/keyboard.h"
+#include "../kernel.h"
 
 
 void init_ddsh(void);

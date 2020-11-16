@@ -1,12 +1,12 @@
 #ifndef __ddmos_tty_h__
 #define __ddmos_tty_h__
 
-#include "../ddcLib/ddcVec.h"
+#include "../../ddcLib/ddcVec.h"
 #include "./vga.h"
-#include "./fonts.h"
-#include "../ddcLib/ddcMake.h"
-#include "../ddcLib/ddcString.h"
-#include "../ddcLib/ddcMem.h"
+#include "../sys/fonts.h"
+#include "../../ddcLib/ddcMake.h"
+#include "../../ddcLib/ddcString.h"
+#include "../../ddcLib/ddcMem.h"
 
 struct ddtty
 {

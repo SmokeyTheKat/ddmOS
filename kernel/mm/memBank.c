@@ -1,8 +1,8 @@
-#include "../include/kernel/memBank.h"
-#include "../include/kernel/kernel.h"
-#include "../include/kernel/tty.h"
-#include "../include/kernel/vga.h"
-#include "../include/kernel/fonts.h"
+#include "../../include/kernel/mm/memBank.h"
+#include "../../include/kernel/kernel.h"
+#include "../../include/kernel/drivers/tty.h"
+#include "../../include/kernel/drivers/vga.h"
+#include "../../include/kernel/sys/fonts.h"
 
 #define DEFAULT_REPO_SIZE 4096
 
@@ -138,7 +138,7 @@ static void memBank_update_graphics(void)
 
 void* memBank_alloc_memory(uint64t size)
 {
-	memoryUsed += (int)size;
+	memoryUsed += size;
 	memBank_update_graphics();
 	struct MBDN* fetchedMemory = memBank_get_repo(mbank, size);
 	return (void*)&(memSpace[memBank_get_real_address(mbank, fetchedMemory->repo.address)]);

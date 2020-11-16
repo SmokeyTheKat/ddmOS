@@ -1,7 +1,7 @@
 #ifndef __ddmos_membank_h__
 #define __ddmos_membank_h__
 
-#include "../ddcDef.h"
+#include "../../ddcDef.h"
 
 struct membank;
 struct memRepo;

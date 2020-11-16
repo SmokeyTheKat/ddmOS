@@ -1,4 +1,4 @@
-#include "../include/kernel/vga.h"
+#include "../../include/kernel/drivers/vga.h"
 
 char* const g_vgaBuffer = (char* const)0xA0000; //vga video memory
 

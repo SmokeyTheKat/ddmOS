@@ -1,7 +1,7 @@
 #ifndef __ddmos_system_h__
 #define __ddmos_system_h__
 
-#include "../ddcDef.h"
+#include "../../ddcDef.h"
 
 
 uint8t system_inb(uint16t port);

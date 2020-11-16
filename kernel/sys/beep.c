@@ -1,4 +1,4 @@
-#include "../include/kernel/beep.h"
+#include "../../include/kernel/sys/beep.h"
 
 void system_beep(uint32t frequency)
 {

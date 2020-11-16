@@ -1,7 +1,7 @@
 #ifndef __ddmos_task_h__
 #define __ddmos_task_h__
 
-#include "./system.h"
+#include "../sys/system.h"
 
 struct task
 {

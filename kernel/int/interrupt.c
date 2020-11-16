@@ -1,4 +1,4 @@
-#include "../include/kernel/interrupt.h"
+#include "../../include/kernel/int/interrupt.h"
  
 static struct IDT_entry IDT[256];
 

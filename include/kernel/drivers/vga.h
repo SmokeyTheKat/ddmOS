@@ -1,7 +1,7 @@
 #ifndef __ddmos_vga_h__
 #define __ddmos_vga_h__
 
-#include "./system.h"
+#include "../sys/system.h"
 
 
 #define VGA_WIDTH 320

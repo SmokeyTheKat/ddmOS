@@ -1,4 +1,4 @@
-#include "../include/kernel/fonts.h"
+#include "../../include/kernel/sys/fonts.h"
 
 byte g_vgaFont[255][4];
 

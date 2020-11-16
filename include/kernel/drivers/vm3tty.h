@@ -1,8 +1,8 @@
 #ifndef __ddmos_tty_h__
 #define __ddmos_tty_h__ 1
 
-#include "../ddcDef.h"
-#include "./system.h"
+#include "../../ddcDef.h"
+#include "../sys/system.h"
 
 extern sizet g_termYPos;// current pos of cursor y
 extern sizet g_termXPos;// current pos of cursor x

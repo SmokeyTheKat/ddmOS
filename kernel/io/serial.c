@@ -1,4 +1,4 @@
-#include "../include/kernel/serial.h"
+#include "../../include/kernel/io/serial.h"
 
 void init_serial(uint16t cport)
 {

@@ -1,11 +1,11 @@
 #ifndef __ddmos_keyboard_h__
 #define __ddmos_keyboard_h__
 
-#include "../ddcDef.h"
-#include "./kernel.h"
-#include "./tty.h"
-#include "./interrupt.h"
-#include "./ddsh.h"
+#include "../../ddcDef.h"
+#include "../kernel.h"
+#include "../drivers/tty.h"
+#include "../int/interrupt.h"
+#include "../drivers/ddsh.h"
 
 #define KB_DATA_PORT 0x60
 #define KB_STATUS_PORT 0x64

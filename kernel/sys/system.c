@@ -1,4 +1,4 @@
-#include "../include/kernel/system.h"
+#include "../../include/kernel/sys/system.h"
 
 uint8t system_inb(uint16t port)
 {

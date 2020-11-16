@@ -1,19 +1,17 @@
 //kernel.h    the main kernel script
 #include "../include/kernel/kernel.h"
-#include "../include/kernel/tty.h"
-#include "../include/kernel/keyboard.h"
-#include "../include/kernel/system.h"
-#include "../include/kernel/beep.h"
-#include "../include/kernel/interrupt.h"
-#include "../include/kernel/serial.h"
-#include "../include/kernel/vga.h"
-#include "../include/kernel/fonts.h"
-#include "../include/kernel/memBank.h"
+#include "../include/kernel/drivers/tty.h"
+#include "../include/kernel/io/keyboard.h"
+#include "../include/kernel/sys/system.h"
+#include "../include/kernel/sys/beep.h"
+#include "../include/kernel/int/interrupt.h"
+#include "../include/kernel/io/serial.h"
+#include "../include/kernel/drivers/vga.h"
+#include "../include/kernel/sys/fonts.h"
+#include "../include/kernel/mm/memBank.h"
 
 #include "../include/ddcLib/ddcString.h"
 #include "../include/ddcDef.h"
-
-#include <stdint.h>
 
 volatile unsigned char g_scanCodeState;
 

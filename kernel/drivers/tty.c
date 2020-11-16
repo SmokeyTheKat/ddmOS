@@ -1,4 +1,4 @@
-#include "../include/kernel/tty.h"
+#include "../../include/kernel/drivers/tty.h"
 
 struct ddtty make_ddtty(ddIVec2 topLeftPos, ddIVec2 size, ddIVec2 textSize, uint8t foregroundColor, uint8t backgroundColor)
 {
