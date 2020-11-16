@@ -35,13 +35,13 @@ typedef uint32t 		wchar;
 	})
 	#endif
 #ifndef make
-	#define make(t,s) ((t*)memBank_get_memory(s*sizeof(t)))
+	#define make(t,s) ((t*)memBank_alloc_memory(s*sizeof(t)))
 	#endif
 #ifndef makea
-	#define makea(t,s) ((t*)memBank_get_memory(s*sizeof(t)))
+	#define makea(t,s) ((t*)memBank_alloc_memory(s*sizeof(t)))
 	#endif
 #ifndef makep
-	#define makep(t) ((t*)memBank_get_memory(sizeof(t)))
+	#define makep(t) ((t*)memBank_alloc_memory(sizeof(t)))
 	#endif
 #ifndef raze
 	#define raze(t) (memBank_free_memory(t))
