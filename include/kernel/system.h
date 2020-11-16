@@ -15,19 +15,27 @@ void system_halt(void);
 void system_await_input(void);
 uint64t system_get_rdtsc(void);
 void system_sleep(uint32t sleepTime);
+void system_sleep_seconds(double sleepTime);
 void system_reboot(void);
 //void system_set_vga_mode(uint8t _move);
 
 //get rid of this yo
 void* memset(void* _d, int8t _v, sizet _c);
 
-struct regs
+typedef struct regs16
 {
 	uint16t gs, fs, es, ds;
 	uint16t edi, esi, ebp, esp, ebx, edx, ecx, eax;
 	uint16t intNo, errorCode;
 	uint16t eip, cs, eflags, useresp, ss;
-};
+} regs16t;
+
+typedef struct regs32
+{
+	uint32t eax, ebx, ecx, edx;
+	uint32t esi, edi, esp, ebp, eip;
+	uint32t eflags, cr3;
+} regs32t;
 
 
 #endif

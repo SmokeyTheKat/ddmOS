@@ -74,6 +74,10 @@ void system_sleep(uint32t sleepTime)
 		if (sleepTime <= 0) break;
 	}
 }
+void system_sleep_seconds(double sleepTime)
+{
+	system_sleep((uint32t)(sleepTime * (double)500000000));
+}
 
 /*
 void system_set_vga_mode(uint8t _move)
