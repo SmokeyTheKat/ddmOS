@@ -9,6 +9,12 @@ void vga_set_pixel(int x, int y, uint8t color)
 	g_vgaBuffer[y*VGA_WIDTH+x] = color;
 }
 
+void vga_clear(void)
+{
+	for (int i = 0; i < 320*VGA_WIDTH+320; i++)
+		g_vgaBuffer[i] = 0;
+}
+
 void vga_draw_char(byte* charFont, int x, int y, uint8t fgColor, uint8t bgColor)
 {
 	for (int i = 0; i < 4; i++)
