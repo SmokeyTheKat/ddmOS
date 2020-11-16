@@ -28,6 +28,7 @@ boot:
 	sti ; enable interrupts
 	mov eax, cr0 ; load reg cr0
 	or eax, 0x1 ; set protected move bit on reg cr0
+	and eax, 0x7FFFFFFF; disable paging
 	mov cr0, eax
 
 	mov ax, DATA_SEG
@@ -76,6 +77,7 @@ bits 32
 
 bootr:
 	mov esp, kstack_top
+
 	extern kmain ; load kernal main function
 	call kmain ; run kernal main function
 	cli ; clear interupt flag
