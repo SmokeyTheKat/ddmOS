@@ -7,10 +7,6 @@
 static ddString buffer;
 static int bufferPos = -1;
 
-void init_ddsh(void)
-{
-	buffer = make_multi_ddString_cstring("\0", 200);
-}
 static void buffer_clear(void)
 {
 	for (sizet i = 0; i < buffer.length; i++)
@@ -19,6 +15,12 @@ static void buffer_clear(void)
 	}
 	buffer.length = 0;
 	bufferPos = -1;
+}
+
+void init_ddsh(void)
+{
+	buffer = make_multi_ddString_cstring("0", 200);
+	buffer_clear();
 }
 
 static void rewrite_line(void)
