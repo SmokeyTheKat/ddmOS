@@ -186,7 +186,7 @@ void ddString_pop_back(ddString* _d, ddsize _n)
 	_d->length -= _n;
 }
 
-ddString make_ddString_from_int(int _v)
+ddString make_ddString_from_int(int32t _v)
 {
 	if (_v == 0) return make_ddString("0");
 	char sign;
@@ -226,9 +226,9 @@ void ddString_insert_char_at(ddString* _d, char _c, ddsize _i)
 	_d->length++;
 }
 
-static int __floatTdsCount(int n, int c)
+static int32t __floatTdsCount(int32t n, int32t c)
 {
-    int _o = 1;
+    int32t _o = 1;
     while(c-- > 0)
         _o *= n;
 
@@ -447,11 +447,11 @@ void raze_auto_ddString(ddString* _d)
 		raze_ddString(_d);
 }
 
-int ddString_to_int(const ddString _ds)
+int32t ddString_to_int(const ddString _ds)
 {
 	char* st = _ds.cstr;
-	int out = 0;
-	int sign = 1 - ((*st == 45)*2);
+	int32t out = 0;
+	int32t sign = 1 - ((*st == 45)*2);
 	while(*st)
 	{
 		out = (out*10) + (*st++ - 48);

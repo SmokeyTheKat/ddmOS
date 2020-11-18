@@ -1,5 +1,14 @@
 #include "../../include/ddcLib/ddcMem.h"
 
+void ddMem_set(void* dest, int value, sizet length)
+{
+	char* cdest = (char*)dest;
+	for (sizet i = 0; i < length; i++)
+	{
+		cdest[i] = value;
+	}
+}
+
 void ddMem_copy(void* dest, const void* src, sizet length)
 {
 	char* cdest = (char*)dest;

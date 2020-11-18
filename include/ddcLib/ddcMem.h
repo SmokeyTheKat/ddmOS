@@ -3,6 +3,7 @@
 
 #include "../ddcDef.h"
 
+void ddMem_set(void* dest, int value, sizet length);
 void ddMem_copy(void* dest, const void* src, sizet length);
 void ddMem_copy_setp(void* dest, const void* src, sizet step, sizet length);
 void ddMem_copy_offset(void* dest, const void* src, sizet destOffset, sizet srcOffset, sizet length);

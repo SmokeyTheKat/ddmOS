@@ -12,8 +12,15 @@ all: compile clean
 compile: $(OBJS)
 	i686-elf-gcc -T ./link/linker.ld -o ./compiled/ddmOS.bin -ffreestanding -O2 -nostdlib $(CHEADERS) $(OBJS) -lgcc
 run: all clean
-	qemu-system-x86_64 -fda ./compiled/ddmOS.bin -soundhw pcspk
+	qemu-system-x86_64 -fda ./compiled/ddmOS.bin -boot a -m 100M -soundhw pcspk -hda storage.img
 	clean
+img:
+	mkdir -p mnt
+	sudo mount -o loop ./storage.img ./mnt
+	sudo cp -rf ./base/* ./mnt/
+	sudo cp -rf ./kernel/* ./mnt/kernel
+	sudo umount ./storage.img
+	rm -rf mnt
 %.o: %.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 %.o: %.s

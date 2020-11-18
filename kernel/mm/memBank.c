@@ -149,7 +149,7 @@ void memBank_free_memory(void* addr)
 	fetchedMemory->repo.isFree = true;
 	if (fetchedMemory->next == nullptr)
 		fetchedMemory->prev->next = nullptr;
-	memoryUsed -= fetchedMemory->repo.size;
+	//memoryUsed -= fetchedMemory->repo.size;
 	memBank_update_graphics();
 }
 

@@ -7,6 +7,7 @@
 #include "../include/kernel/int/interrupt.h"
 #include "../include/kernel/io/serial.h"
 #include "../include/kernel/drivers/vga.h"
+#include "../include/kernel/drivers/pio.h"
 #include "../include/kernel/sys/fonts.h"
 #include "../include/kernel/mm/memBank.h"
 
@@ -27,6 +28,16 @@ void kernel_ps1(struct ddtty* _dt)
 	ddtty_write_cstring(_dt, "]> ");
 	ddtty_set_color(_dt, _dt->fgColor, _dt->bgColor);
 	ddtty_draw_cursor(_dt);
+}
+
+extern void func(void)
+{
+	int a = 5;
+	ddString ad = make_ddString_from_int((int32t)(&a));
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	return;
 }
 
 static void kernel_load_screen(void)
@@ -169,21 +180,22 @@ extern void kmain(void)
 
 	kernel_draw_borders();
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING MEMORY BANK...\n");
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING VGA DRIVERS...\n");
-	ddtty_write_cstring(&g_selectedTerm, "STARTING DDTTY...\n");
-	ddtty_write_cstring(&g_selectedTerm, "STARTING SYSTEM FONTS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING MEMORY BANK...\n");
 
-	ddtty_write_cstring(&g_selectedTerm, "READYING SERIAL COMS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING VGA DRIVERS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING DDTTY...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING SYSTEM FONTS...\n");
+
+	//ddtty_write_cstring(&g_selectedTerm, "READYING SERIAL COMS...\n");
 	init_serial(PORT_COM1);
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING IDT...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING IDT...\n");
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING KEYBOARD LAYOUTS...\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING KEYBOARD LAYOUTS...\n");
 	init_keyboard();
 
-	ddtty_write_cstring(&g_selectedTerm, "STARTING DDMOS INTERRUPTER...\n\n");
+	//ddtty_write_cstring(&g_selectedTerm, "STARTING DDMOS INTERRUPTER...\n\n");
 	init_ddsh();
 
 	g_selectedTerm = g_kernelTerm1;
@@ -191,6 +203,39 @@ extern void kmain(void)
 	ddtty_write_cstring(&g_selectedTerm, "WELCOME TO DDMOS!\n\n");
 
 	kernel_ps1(&g_selectedTerm);
+
+/*
+	int a = 10;
+	int b = 10;
+	ddString ad = make_ddString_from_int((int32t)(&a));
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	raze_ddString(&ad);
+	ad = make_ddString_from_int((int32t)(&b));
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	raze_ddString(&ad);
+
+	sizet size = 1000 * 1000;
+	sizet prgmSize = 50000;
+	byte* prgm = make(byte, size);
+	ddMem_copy(prgm, func, prgmSize);
+	void* stackAddrSP = (void*)((uint32t)((void*)prgm) + 0x7a120);
+
+	extern void switchTasks();
+	switchTasks(stackAddrSP);
+
+	int c = 10;
+	int d = 11;
+	ad = make_ddString_from_int((int32t)(&d));
+	ddtty_write_cstring(&g_selectedTerm, "\n\nADDR: ");
+	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
+	ddtty_write_cstring(&g_selectedTerm, "\n\n");
+	raze_ddString(&ad);
+*/
+			
 
 	for(;;) asm volatile("hlt");
 }
