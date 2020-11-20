@@ -3,6 +3,7 @@
 #include "../../include/kernel/drivers/tty.h"
 #include "../../include/kernel/drivers/vga.h"
 #include "../../include/kernel/sys/fonts.h"
+#include "../../include/ddcLib/ddcString.h"
 
 #define DEFAULT_REPO_SIZE 4096
 
@@ -127,11 +128,11 @@ static void memBank_update_graphics(void)
 	vga_draw_char(g_vgaFont[(int)(':')], cptr, 6, 15, 0);
 	cptr+=6;
 
-	char ustr[8];
-	int_to_cstring(memoryUsed, ustr, 8);
+	char number[8];
+	int_to_cstring(memoryUsed, number, 8);
 	for (int i = 0; i < 8; i++)
 	{
-		vga_draw_char(g_vgaFont[(int)(ustr[i])], cptr, 6, 15, 0);
+		vga_draw_char(g_vgaFont[(int)(number[i])], cptr, 6, 15, 0);
 		cptr+=6;
 	}
 }

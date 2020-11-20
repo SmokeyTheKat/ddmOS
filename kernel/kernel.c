@@ -116,14 +116,12 @@ static void kernel_load_screen(void)
 		}
 	}
 
-	system_cbeep(196, 0.8);
-	system_cbeep(185, 0.2);
-	system_cbeep(185, 0.2);
-	system_sleep_seconds(0.13);
-	system_cbeep(147, 0.4);
-	system_cbeep(165, 0.2);
-	system_cbeep(96, 0.6);
-	system_sleep_seconds(1.5);
+	system_sleep_seconds(0.6);
+	system_cbeep(294, 0.3);
+	system_cbeep(370, 0.2);
+	system_cbeep(392, 0.4);
+
+	system_sleep_seconds(0.2);
 }
 
 static void kernel_draw_borders(void)
@@ -204,38 +202,15 @@ extern void kmain(void)
 
 	kernel_ps1(&g_selectedTerm);
 
-/*
-	int a = 10;
-	int b = 10;
-	ddString ad = make_ddString_from_int((int32t)(&a));
-	ddtty_write_cstring(&g_selectedTerm, "\n\n");
-	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
-	ddtty_write_cstring(&g_selectedTerm, "\n\n");
-	raze_ddString(&ad);
-	ad = make_ddString_from_int((int32t)(&b));
-	ddtty_write_cstring(&g_selectedTerm, "\n\n");
-	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
-	ddtty_write_cstring(&g_selectedTerm, "\n\n");
-	raze_ddString(&ad);
-
 	sizet size = 1000 * 1000;
 	sizet prgmSize = 50000;
+
 	byte* prgm = make(byte, size);
 	ddMem_copy(prgm, func, prgmSize);
-	void* stackAddrSP = (void*)((uint32t)((void*)prgm) + 0x7a120);
+	void* stackAddrSP = (void*)((uint32t)((void*)prgm) + size);
 
 	extern void switchTasks();
 	switchTasks(stackAddrSP);
-
-	int c = 10;
-	int d = 11;
-	ad = make_ddString_from_int((int32t)(&d));
-	ddtty_write_cstring(&g_selectedTerm, "\n\nADDR: ");
-	ddtty_write_cstring(&g_selectedTerm, ad.cstr);
-	ddtty_write_cstring(&g_selectedTerm, "\n\n");
-	raze_ddString(&ad);
-*/
-			
 
 	for(;;) asm volatile("hlt");
 }
