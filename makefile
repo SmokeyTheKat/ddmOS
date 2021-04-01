@@ -1,29 +1,32 @@
-CSRCS =  $(shell find ./kernel/ -type f -name '*.c') \
-	 $(shell find ./lib/ddcLib/ -type f -name '*.c')
+CSRCS =  $(shell find ./kernel/ -type f -name '*.c')
 ASMSRCS =  $(shell find ./kernel/ -type f -name '*.s') \
-	   $(shell find ./boot/ -type f -name '*.s')
-CHEADERS = $(shell find ./include/ -type f -name '.h') \
-	   $(shell find ./usr/include/ -type f -name '.h')
-OBJS =  $(CSRCS:.c=.o) $(ASMSRCS:.s=.o)
-CC = i686-elf-gcc
-CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+	   $(shell find ./boot/ -type f -name '*.S')
+CHEADERS = $(shell find ./include/ -type f -name '.h')
+OBJS =  $(CSRCS:.c=.o) $(ASMSRCS:.S=.o)
+DFILES =  $(CSRCS:.c=.d) $(ASMSRCS:.S=.d)
+CC = gcc
+CFLAGS = -nostdlib -nostdinc -fno-builtin -ffreestanding -O2 -g -Wall -Wextra -Werror -MMD -mno-red-zone -mcmodel=kernel -fno-pie -I ./include/ 
 
-all: compile clean
+all: clean compile clean
+
 compile: $(OBJS)
-	i686-elf-gcc -T ./link/linker.ld -o ./compiled/ddmOS.bin -ffreestanding -O2 -nostdlib $(CHEADERS) $(OBJS) -lgcc
-run: all clean
-	qemu-system-x86_64 -fda ./compiled/ddmOS.bin -boot a -m 100M -soundhw pcspk -hda storage.img
-	clean
-img:
-	mkdir -p mnt
-	sudo mount -o loop ./storage.img ./mnt
-	sudo cp -rf ./base/* ./mnt/
-	sudo cp -rf ./kernel/* ./mnt/kernel
-	sudo umount ./storage.img
-	rm -rf mnt
+	$(CC) -z max-page-size=0x1000 $(CFLAGS) -no-pie -Wl,--build-id=none -T ./boot/linker.ld -o ./ddmOS.bin $(OBJS)
+
+	mkdir -p ./build/boot/grub
+	mv ./ddmOS.bin ./build/boot/ddmOS.bin
+	cp ./boot/grub/grub.cfg ./build/boot/grub/grub.cfg
+	grub-mkrescue -o ./ddmOS.iso ./build/
+	rm -f $(OBJS)
+	rm -f $(DFILES)
+nc: all
+	alacritty -e qemu-system-x86_64 ./ddmOS.iso
+tc: all
+	alacritty -e qemu-system-x86_64 ./ddmOS.iso -curses &
+
 %.o: %.c
-	$(CC) -c $< -o $@ $(CFLAGS)
-%.o: %.s
-	nasm -f elf32 $< -o $@
+	$(CC) $(CFLAGS) -c -o $@ $<
+%.o: %.S
+	$(CC) $(CFLAGS) -Wa,--divide -c -o $@ $<
 clean:
-	rm -rf ${OBJS}
+	rm -f $(OBJS)
+	rm -f $(DFILES)

@@ -1,51 +1,27 @@
-#include "../../include/kernel/sys/system.h"
+#include <kernel/system.h>
 
-uint8t system_inb(uint16t port)
+uint8t system_inb(uint16t _port)
 {
-	uint8t output;
-	asm volatile("inb %1, %0" : "=a"(output) : "d"(port));
-	return output;
-}
-/*
-uint16t system_inw(uint16t port)
-{
-	uint16t output;
-	asm volatile("inw %1, %0" : "=a"(output) : "d"(port));
-	return output;
-}
-*/
-uint32t system_inl(uint16t port)
-{
-	uint32t output;
-	asm volatile("inl %1, %0" : "=a"(output) : "d"(port));
-	return output;
+	uint8t _o;
+	asm volatile("inb %1, %0" : "=a"(_o) : "d"(_port));
+	return _o;
 }
 
-void system_outb(uint16t port, uint8t value)
+void system_outb(uint16t _port, uint8t _v)
 {
-	asm volatile("outb %0, %1" : : "a"(value), "d"(port));
+	asm volatile("outb %0, %1" : : "a"(_v), "d"(_port));
 }
-/*
-void system_outw(uint16t port, int16t value)
+
+void system_await_input(void)
 {
-	asm volatile("outw %0, %1" : : "a"(value), "d"(port));
-}
-*/
-void system_outd(uint16t port, uint32t value)
-{
-	asm volatile("outl %0, %1" : : "a"(value), "d"(port));
+	asm volatile(   "jmp 1f;"
+			"1:jmp 2f;"
+			"2:");
 }
 
 void system_halt(void)
 {
 	asm volatile("hlt;");
-}
-
-void system_await_input(void)
-{
-	asm volatile("jmp 1f;"
-		     "1:jmp 2f;"
-		     "2:");
 }
 
 void system_reboot(void)
@@ -65,26 +41,15 @@ uint64t system_get_rdtsc(void)
 	return (((uint64t)_h << 32) | _l);
 }
 
-void system_sleep(uint32t sleepTime)
+void system_sleep(uint32t _t)
 {
 	for(;;)
 	{
 		asm volatile("nop");
-		sleepTime--;
-		if (sleepTime <= 0) break;
+		_t--;
+		if (_t <= 0) break;
 	}
 }
-void system_sleep_seconds(double sleepTime)
-{
-	system_sleep((uint32t)(sleepTime * (double)500000000));
-}
-
-/*
-void system_set_vga_mode(uint8t _move)
-{
-	//asm volatile("mov 
-}
-*/
 
 
 //temp memset

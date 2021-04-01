@@ -1,2 +1,0 @@
-# ddmOS
-The best OS!
