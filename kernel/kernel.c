@@ -1,53 +1,31 @@
 #include <kernel/vga.h>
+#include <ddcLib/ddcPrint.h>
+#include <ddcLib/ddcString.h>
+#include <kernel/idt.h>
+#include <kernel/keyboard.h>
 #include <kernel/tty.h>
-#include <ddcPrint.h>
+#include <kernel/mmap.h>
 
-void kmain(void) 
+extern const char test[];
+
+void print_mode(void)
 {
+	char buf[10];
+
+	ddPrints("\x1b[38;5;2mkernel is running in ");
+	ddPrints(make_ddString_from_buf_from_int(buf, 10, sizeof(long)*8).cstr);
+	ddPrints(" bit mode\n");
+}
+
+void kmain(void)
+{
+	char buf[20];
+	init_mmap_regions();
 	init_vga();
+	print_mode();
+	init_idt();
+	init_keyboard();
+	init_vgatty();
 
-	int abit = sizeof(long)*8;
-
-	ddPrints("kernel is running in ");
-	if (abit == 64)
-		ddPrints("64");
-	else if (abit == 32)
-		ddPrints("32");
-	ddPrints(" mode\n");
-
-	ddPrints("\x1b[38;5;0mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;1mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;2mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;3mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;4mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;5mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;6mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;7mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;8mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;9mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;10mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;11mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;12mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;13mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;14mOMG Hi :)\n");
-	ddPrints("\x1b[38;5;15mOMG Hi :)\n");
-
-	ddPrints("\x1b[38;5;1m\n");
-
-	ddPrints("\x1b[48;5;0mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;1mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;2mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;3mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;4mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;5mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;6mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;7mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;8mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;9mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;10mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;11mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;12mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;13mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;14mOMG Hi :)\n");
-	ddPrints("\x1b[48;5;15mOMG Hi :)\n");
+	while (1) asm ("hlt");
 }

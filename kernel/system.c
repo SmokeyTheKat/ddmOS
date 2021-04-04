@@ -46,10 +46,16 @@ void system_sleep(uint32t _t)
 	for(;;)
 	{
 		asm volatile("nop");
-		_t--;
-		if (_t <= 0) break;
+		if (_t-- <= 0) break;
 	}
 }
+
+
+void system_sleep_seconds(double sleepTime)
+{
+	system_sleep((uint32t)(sleepTime * (double)500000000));
+}
+
 
 
 //temp memset

@@ -1,6 +1,10 @@
 #ifndef __ddclib_ddcDef_h__
 #define __ddclib_ddcDef_h__
 
+#define true 1
+#define false 0
+typedef char bool;
+
 typedef signed char             int8t;
 typedef signed short 		int16t;
 typedef signed int	        int32t;

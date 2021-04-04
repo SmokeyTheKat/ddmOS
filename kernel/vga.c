@@ -1,5 +1,6 @@
 #include <kernel/vga.h>
 #include <kernel/system.h>
+#include <ddcLib/ddcMem.h>
 
 const sizet TERMWIDTH  = 80;
 const sizet TERMHEIGHT = 25;
@@ -114,14 +115,35 @@ void vga_write_char(char _c)
 	vga_move_cursor(g_term_x, g_term_y);
 }
 
+void vga_scroll_down(int n)
+{
+	for (int i = 0; i < TERMHEIGHT-n; i++)
+	{
+		ddMem_copy(&g_term_buffer[(i * TERMWIDTH)], &g_term_buffer[(i * TERMWIDTH) + (TERMWIDTH*n)], TERMWIDTH*2);
+	}
+}
+
 void vga_write(const char* s, sizet len)
 {
 	for (sizet i = 0; i < len; i++)
 	{
-		if (s[i] == '\n')
+		if (s[i] == '\b')
+		{
+			g_term_x--;
+			vga_write_char(' ');
+			g_term_x--;
+			vga_move_cursor(g_term_x, g_term_y);
+		}
+		else if (s[i] == '\n')
 		{
 			g_term_x = 0;
 			g_term_y++;
+			if (g_term_y+1 >= TERMHEIGHT)
+			{
+				vga_scroll_down(1);
+				g_term_y--;
+			}
+			vga_move_cursor(g_term_x, g_term_y);
 		}
 		else if (s[i] == '\x1b')
 		{

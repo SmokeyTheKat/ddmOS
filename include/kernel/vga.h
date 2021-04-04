@@ -1,7 +1,7 @@
 #ifndef __DDMOS_VGA_H__
 #define __DDMOS_VGA_H__
 
-#include <ddcDef.h>
+#include <ddcLib/ddcDef.h>
 
 extern sizet g_term_y;
 extern sizet g_term_x;
@@ -9,7 +9,8 @@ extern short g_term_color;
 extern short* g_term_buffer;
 
 typedef enum VColor VColor;
-enum VColor{
+enum VColor
+{
 	VCOLOR_BLACK = 0x0000,
 	VCOLOR_BLUE = 0x0100,
 	VCOLOR_GREEN = 0x0200,
@@ -34,6 +35,7 @@ void vga_enable_cursor(void);
 void vga_disable_cursor(void);
 void vga_move_cursor(int x, int y);
 void vga_update_cursor(void);
+void vga_scroll_down(int n);
 void init_vga(void);
 void vga_write_char(char _c);
 void vga_write(const char* _c, sizet _len);
