@@ -2,6 +2,7 @@
 #include <ddcLib/ddcString.h>
 #include <ddcLib/ddcPrint.h>
 #include <kernel/mmap.h>
+#include <kernel/mbank.h>
 
 char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
 
@@ -19,6 +20,11 @@ void run_command(char* str, int len)
 		ddPrint_char('0');
 		ddPrint_char('\n');
 	}
+	else if (cstring_compare(str, "minfo"))
+	{
+		extern const char minfo[];
+		ddPrints((char*)minfo);
+	}
 	else if (cstring_compare(str, "mstat -a"))
 	{
 		for (int i = 0; i < mmap_region_count; i++)
@@ -34,6 +40,37 @@ void run_command(char* str, int len)
 		{
 			print_memory_map(mmap_usable_regions[i]);
 		}
+	}
+	else if (cstring_compare(str, "mbtest"))
+	{
+		ddPrints("running mbank test\n");
+		char* a = malloc(100);
+		for (int i = 0; i < 100; i++)
+			a[i] = 10;
+
+		ddPrints("malloc a 100 = ");	
+		ddPrint_int((long)a);
+		ddPrints("\n");	
+
+		char* b = malloc(20);
+		ddPrints("malloc b 20 = ");	
+		ddPrint_int((long)b);
+		ddPrints("\n");	
+
+		char* c = malloc(20);
+		ddPrints("malloc c 75 = ");	
+		ddPrint_int((long)c);
+		ddPrints("\n");	
+
+		free(b);
+		ddPrints("free b\n");	
+
+		b = malloc(20);
+		ddPrints("malloc b 20 = ");	
+		ddPrint_int((long)b);
+		ddPrints("\n");	
+
+		ddPrints("good\n");
 	}
 }
 

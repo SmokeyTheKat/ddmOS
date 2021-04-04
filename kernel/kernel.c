@@ -5,6 +5,7 @@
 #include <kernel/keyboard.h>
 #include <kernel/tty.h>
 #include <kernel/mmap.h>
+#include <kernel/mbank.h>
 
 extern const char test[];
 
@@ -20,9 +21,10 @@ void print_mode(void)
 void kmain(void)
 {
 	char buf[20];
-	init_mmap_regions();
 	init_vga();
 	print_mode();
+	init_mmap_regions();
+	init_mbank();
 	init_idt();
 	init_keyboard();
 	init_vgatty();

@@ -8,7 +8,7 @@ detect_memory:
 	mov di, 0x5000
 	mov edx, 0x534d4150
 	xor ebx, ebx
-.loop
+.loop:
 	mov eax, 0xe820
 	mov ecx, 24
 	int 0x15
@@ -17,5 +17,5 @@ detect_memory:
 	add di, 24
 	inc byte[mmap_region_count]
 	jmp .loop
-.done
+.done:
 	ret

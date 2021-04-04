@@ -8,4 +8,5 @@
 %endmacro
 
 qincbin test, "test.txt"
+qincbin minfo, "minfo.txt"
 

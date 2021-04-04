@@ -1,6 +1,3 @@
-global PROGRAM_SPACE
-PROGRAM_SPACE:
-
 jmp enter_protected_mode
 
 %include "boot/print.s"

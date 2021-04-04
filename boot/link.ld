@@ -1,29 +1,29 @@
-ENTRY(_start)
+/*ENTRY(_start)*/
 OUTPUT_FORMAT("binary")
 
 SECTIONS
 {
-	. = 0x7c00;
+	. = 0x8000;
 
-	.text :
+	.text : ALIGN(0x1000)
 	{
 		*(._start)
 		*(.text)
 	}
-	.data :
+	.data : ALIGN(0x1000)
 	{
 		*(.data)
 	}
-	.idt BLOCK(0x1000) :
+	.idt BLOCK(0x1000) : ALIGN(0x1000)
 	{
 		_idt = .;
 		. = . + 0x1000;
 	}
-	.rodata :
+	.rodata : ALIGN(0x1000)
 	{
 		*(.rodata)
 	}
-	.bss :
+	.bss : ALIGN(0x1000)
 	{
 		*(.bss)
 	}

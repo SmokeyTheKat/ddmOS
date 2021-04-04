@@ -15,7 +15,7 @@ void ddPrint_char(char c)
 }
 void ddPrint_int(long v)
 {
-	char buf[64];
-	ddString str = make_ddString_from_buf_from_int(buf, 64, v);
+	char buf[128];
+	ddString str = make_ddString_from_buf_from_int(buf, 128, v);
 	ddPrint(str.cstr, str.length);
 }

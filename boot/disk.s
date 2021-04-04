@@ -1,5 +1,4 @@
-extern PROGRAM_SPACE
-;PROGRAM_SPACE equ 0x10000
+PROGRAM_SPACE equ 0x8000
 
 read_disk:
 	mov ah, 0x02		;read disk
