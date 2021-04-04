@@ -3,6 +3,7 @@
 #include <ddcLib/ddcPrint.h>
 #include <kernel/mmap.h>
 #include <kernel/mbank.h>
+#include <kernel/beep.h>
 
 char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
 
@@ -19,6 +20,28 @@ void run_command(char* str, int len)
 	{
 		ddPrint_char('0');
 		ddPrint_char('\n');
+	}
+	else if (cstring_compare_length(str, "beep", 4))
+	{
+		char n1b[10] = {0};
+		ddString n1 = make_ddString_from_buf(n1b, 10);
+		for (int i = 5; i < len; i++)
+		{
+			if (str[i] == ' ')
+				break;
+			ddString_push_char_back(&n1, str[i]);
+		}
+		char n2b[10] = {0};
+		ddString n2 = make_ddString_from_buf(n2b, 10);
+		for (int i = 5 + n1.length+1; i < len; i++)
+		{
+			if (str[i] == ' ')
+			{
+				break;
+			}
+			ddString_push_char_back(&n2, str[i]);
+		}
+		beep(ddString_to_int(n1), ddString_to_int(n2));
 	}
 	else if (cstring_compare(str, "minfo"))
 	{

@@ -17,7 +17,7 @@ compile: $(OBJS)
 	rm -f $(OBJS)
 	rm -f $(DFILES)
 tc: all
-	alacritty -e qemu-system-x86_64 -fda ./build/ddmOS.img -boot a -m 4G -curses
+	alacritty -e qemu-system-x86_64 -fda ./build/ddmOS.img -boot a -m 4G -soundhw pcspk -curses
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

@@ -34,6 +34,7 @@ void vga_set_color(VColor fg, VColor bg);
 void vga_enable_cursor(void);
 void vga_disable_cursor(void);
 void vga_move_cursor(int x, int y);
+void vga_clear(void);
 void vga_update_cursor(void);
 void vga_scroll_down(int n);
 void init_vga(void);

@@ -53,10 +53,11 @@ start_protected_mode:
 ;%include "kernel/sidt.s"
 
 start_long_mode:
-	mov edi, 0xb8000
-	mov rax, 0x0000000000000000
-	mov ecx, 500
-	rep stosq
+	mov byte[0xb8000], byte 'h'
+	mov byte[0xb8002], byte 'e'
+	mov byte[0xb8004], byte 'l'
+	mov byte[0xb8006], byte 'l'
+	mov byte[0xb8008], byte 'o'
 	call kmain
 	jmp $
 	

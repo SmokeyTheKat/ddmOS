@@ -22,6 +22,7 @@ void kmain(void)
 {
 	char buf[20];
 	init_vga();
+	vga_clear();
 	print_mode();
 	init_mmap_regions();
 	init_mbank();

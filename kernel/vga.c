@@ -103,6 +103,19 @@ void init_vga(void)
 	}
 }
 
+void vga_clear(void)
+{
+	for (int x = 0; x < TERMWIDTH; x++)
+	{
+		for (int y = 0; y < TERMHEIGHT; y++)
+		{
+			g_term_buffer[y*TERMWIDTH + x] = 0;
+			g_term_buffer[y*TERMWIDTH + x+1] = 0;
+		}
+	}
+			
+}
+
 void vga_write_char(char _c)
 {
 	g_term_buffer[(g_term_y * TERMWIDTH) + g_term_x] = g_term_color | _c;
