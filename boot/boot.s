@@ -1,18 +1,53 @@
-[org 0x7c00]
-[bits 16]
+[bits 32]
+extern long_mode_start
+
 global _start
+section .text
 _start:
-	mov [BOOT_DISK], dl	;get disk number
+	mov dword[multiboot_magic], eax
+	mov dword[multiboot_ptr], ebx
 
-	mov bp, 0x7c00		;move stack to top of prgram
-	mov sp, bp
+	mov esp, stack_top
 
-	call read_disk
+	mov ebx, str
+	call print_string
 
-	jmp PROGRAM_SPACE
+	;call detect_multiboot
+	call detect_cpuid
+	call detect_long_mode
 
-%include "boot/print.s"
-%include "boot/disk.s"
+	call init_id_paging
+	call enable_paging
 
-times 510-($-$$) db 0
-dw 0xaa55
+	lgdt [gdt64.base]
+	jmp gdt64.code_segment:long_mode_start
+
+	hlt
+
+
+
+%include "boot/print.asm"
+%include "boot/paging.asm"
+%include "boot/cpuid.asm"
+%include "boot/gdt.asm"
+
+section .data
+str: db "Test string :)",0
+
+global multiboot_ptr
+multiboot_ptr: dd 0
+global multiboot_magic
+multiboot_magic: dd 0
+
+
+section .bss
+align 4096
+page_table_l4:
+	resb 4096
+page_table_l3:
+	resb 4096
+page_table_l2:
+	resb 4096
+stack_bottom:
+	resb 4096 * 4
+stack_top:

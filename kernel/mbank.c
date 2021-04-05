@@ -19,17 +19,16 @@ struct mbank_repo make_mbank_repo(struct mbank_repo* next, struct mbank_repo* pr
 
 void init_mbank(void)
 {
+/*
 	struct mmap_entry mme_null = (struct mmap_entry){0};
 	mme_null.region_length = 0;
 	struct mmap_entry* largest = &mme_null;
 	largest = mmap_usable_regions[1];
-/*
-	for (int i = 0; i < mmap_usable_region_count; i++)
-	{
-		if (mmap_usable_regions[i]->region_length > largest->region_length)
-			largest = mmap_usable_regions[i];
-	}
-*/
+	//for (int i = 0; i < mmap_usable_region_count; i++)
+	//{
+	//	if (mmap_usable_regions[i]->region_length > largest->region_length)
+	//		largest = mmap_usable_regions[i];
+	//}
 
 	ddPrints("starting mbank at ");
 	ddPrint_int(largest->base_address);
@@ -41,6 +40,7 @@ void init_mbank(void)
 						mbank_main.base+sizeof(struct mbank_repo),
 						16, 16, 0);
 	mbank_main.head = (struct mbank_repo*)mbank_main.base;
+*/
 }
 
 void mbank_repo_append_new(struct mbank_repo* mbr, uint64t size)

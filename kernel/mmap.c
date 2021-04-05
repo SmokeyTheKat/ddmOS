@@ -3,6 +3,7 @@
 #include <ddcLib/ddcString.h>
 
 
+/*
 struct mmap_entry* mmap_usable_regions[10];
 long mmap_usable_region_count = 0;
 
@@ -36,3 +37,4 @@ struct mmap_entry** mmap_get_usable_regions(void)
 {
 	return mmap_usable_regions;
 }
+*/

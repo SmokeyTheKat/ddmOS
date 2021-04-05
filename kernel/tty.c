@@ -50,22 +50,27 @@ void run_command(char* str, int len)
 	}
 	else if (cstring_compare(str, "mstat -a"))
 	{
+/*
 		for (int i = 0; i < mmap_region_count; i++)
 		{
 			struct mmap_entry* mmap = (struct mmap_entry*)0x5000;
 			mmap += i;
 			print_memory_map(mmap);
 		}
+*/
 	}
 	else if (cstring_compare(str, "mstat"))
 	{
+/*
 		for (int i = 0; i < mmap_usable_region_count; i++)
 		{
 			print_memory_map(mmap_usable_regions[i]);
 		}
+*/
 	}
 	else if (cstring_compare(str, "mbtest"))
 	{
+/*
 		ddPrints("running mbank test\n");
 		char* a = malloc(100);
 		for (int i = 0; i < 100; i++)
@@ -94,6 +99,7 @@ void run_command(char* str, int len)
 		ddPrints("\n");	
 
 		ddPrints("good\n");
+*/
 	}
 }
 
