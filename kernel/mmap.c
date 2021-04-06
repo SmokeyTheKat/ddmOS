@@ -1,40 +1,39 @@
 #include <kernel/mmap.h>
+#include <kernel/kernel.h>
 #include <ddcLib/ddcPrint.h>
 #include <ddcLib/ddcString.h>
 
 
-/*
-struct mmap_entry* mmap_usable_regions[10];
+multiboot_memory_map_t* mmap_usable_regions[10];
 long mmap_usable_region_count = 0;
 
-void print_memory_map(struct mmap_entry* mmap)
+
+void print_memory_map(multiboot_memory_map_t* mmap)
 {
 	ddPrints("base: ");
-	ddPrint_int(mmap->base_address);
+	ddPrint_int(mmap->addr);
 	ddPrints("  rlen: ");
-	ddPrint_int(mmap->region_length);
+	ddPrint_int(mmap->len);
 	ddPrints("  mtype: ");
-	ddPrint_int(mmap->region_type);
-	ddPrints("  memattrs: ");
-	ddPrint_int(mmap->ext_attrs);
+	ddPrint_int(mmap->type);
 	ddPrints("\n");
 }
 
 void init_mmap_regions(void)
 {
-	for (int i = 0; i < mmap_region_count; i++)
+	for (multiboot_memory_map_t* mmap = (multiboot_memory_map_t *) multiboot_ptr->mmap_addr;
+		(unsigned long) mmap < multiboot_ptr->mmap_addr + multiboot_ptr->mmap_length;
+			mmap = (multiboot_memory_map_t *) ((unsigned long) mmap
+			+ mmap->size + sizeof (mmap->size)))
 	{
-		struct mmap_entry* mmap = (struct mmap_entry*)0x5000;
-		mmap += i;
-		if (mmap->region_type == 1)
+		if (mmap->type == 1)
 		{
 			mmap_usable_regions[mmap_usable_region_count++] = mmap;
 		}
 	}
 }
 
-struct mmap_entry** mmap_get_usable_regions(void)
+struct multiboot_memory_map_t** mmap_get_usable_regions(void)
 {
 	return mmap_usable_regions;
 }
-*/

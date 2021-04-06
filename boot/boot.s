@@ -35,9 +35,9 @@ section .data
 str: db "Test string :)",0
 
 global multiboot_ptr
-multiboot_ptr: dd 0
+multiboot_ptr: dq 0
 global multiboot_magic
-multiboot_magic: dd 0
+multiboot_magic: dq 0
 
 
 section .bss

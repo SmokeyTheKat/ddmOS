@@ -1,3 +1,4 @@
+#include <kernel/kernel.h>
 #include <kernel/vga.h>
 #include <ddcLib/ddcPrint.h>
 #include <ddcLib/ddcString.h>
@@ -21,16 +22,13 @@ void print_mode(void)
 
 void kmain(void)
 {
-	extern multiboot_info_t* multiboot_ptr;
-	extern uint64t multiboot_magic;
 	char buf[20];
 	init_vga();
 	vga_clear();
 	print_mode();
-	//init_mmap_regions();
+	init_mmap_regions();
 	init_mbank();
 	init_idt();
-	//ddPrint_int(multiboot_ptr->boot_device);
 	ddPrints("\n");
 	init_keyboard();
 	init_vgatty();
