@@ -7,6 +7,7 @@
 #include <kernel/system.h>
 #include <kernel/beep.h>
 #include <kernel/ata.h>
+#include <kernel/fs.h>
 #include <user/test.c>
 
 char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
@@ -81,25 +82,39 @@ void run_command(char* str, int len)
 		}
 		beep(ddString_to_int(n1), ddString_to_int(n2));
 	}
+	else if (cstring_compare_length(str, "ls", 2))
+	{
+		if (len <= 3) return;
+		fs_ls(ddString_to_int(make_constant_ddString(str+3)));
+	}
 	else if (cstring_compare_length(str, "plba", 4))
 	{
 		if (len <= 5) return;
 		char* target = malloc(256);
-		read_sectors_ata_pio((char*)target, ddString_to_int(make_constant_ddString(str+5)), 1);
+		ata_read_sectors((char*)target, ddString_to_int(make_constant_ddString(str+5)), 1);
 		ddPrints(target);
 		ddPrints("\n");
 		free(target);
 	}
-	else if (cstring_compare(str, "find"))
+	else if (cstring_compare(str, "findfs"))
 	{
+		ddPrints("fs located at ");
+		ddPrint_int(fs_get_location());
+		ddPrints("\n");
+	}
+	else if (cstring_compare_length(str, "find", 4))
+	{
+		if (len <= 5) return;
 		char* target = malloc(256);
-		int i;
-		for (i = 0; !cstring_compare_length(target, "OMGHITHEREHOWAREYOUDOINGTODAYYO", 31); i++)
+		int i = 0;
+		int flen = cstring_length(str+5);
+		bool found = false;
+		for (i = 0; !cstring_compare_length(target, str+5, flen); i++)
 		{
-			read_sectors_ata_pio((char*)target, i, 1);
+			ata_read_sectors((char*)target, i, 1);
 		}
 		i--;
-		ddPrints("FOUND 'OMGHITHEREHOWAREYOUDOINGTODAYYO' :) at lba ");
+		ddPrints("found at lba ");
 		ddPrint_int(i);
 		ddPrints("\n");
 		free(target);
@@ -112,7 +127,7 @@ void run_command(char* str, int len)
 	{
 		ddPrints("READING FIRST 2 BYTES FROM DISK\n");
 		char* target = malloc(256);
-		read_sectors_ata_pio((char*)target, 0x00, 1);
+		ata_read_sectors((char*)target, 0x00, 1);
 		ddPrint((char*)target, 2);
 		free(target);
 	}
@@ -120,10 +135,10 @@ void run_command(char* str, int len)
 	{
 		ddPrints("WRITING FIRST 2 BYTES ON DISK AS 'YO'\n");
 		char* target = malloc(256);
-		read_sectors_ata_pio((char*)target, 0x00, 1);
+		ata_read_sectors((char*)target, 0x00, 1);
 		target[0] = 'Y';
 		target[1] = 'O';
-		write_sectors_ata_pio(0x00, 1, target);
+		ata_write_sectors(0x00, 1, target);
 		free(target);
 	}
 	else if (cstring_compare(str, "poweroff"))
@@ -227,5 +242,8 @@ void vgatty_handle_key(uint8t key)
 void init_vgatty(void)
 {
 	keyboard_set_focus(vgatty_handle_key, false);
+}
+void start_vgatty(void)
+{
 	ddPrints(PS1);
 }

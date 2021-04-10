@@ -12,6 +12,7 @@ struct vgatty
 };
 
 void init_vgatty(void);
+void start_vgatty(void);
 void vgatty_handle_key(uint8t key);
 
 #endif

@@ -12,12 +12,16 @@ CFLAGS = -nostdlib -nostdinc -fno-builtin -ffreestanding -O2 -g -Wall -Wextra -m
 all: compile
 
 compile: $(OBJS)
+	mkdir -p ./build
 	ld -n -o ./build/ddmOS.bin -T ./boot/linker.ld $(OBJS)
 	cp ./boot/grub/grub.cfg ./isodir/boot/grub/
 	cp ./build/ddmOS.bin ./isodir/boot/
-	grub-mkrescue /usr/lib/grub/i386-pc -o ./ddmOS.iso isodir
+	grub-mkrescue /usr/lib/grub/i386-pc -o ./build/ddmOS.iso isodir
 	rm $(OBJS)
 	rm $(DFILES)
+fs:
+	dd if=./misc/magic of=./isodir/root/disk bs=8
+	dd if=/dev/zero of=./isodir/root/disk bs=1M count=500 skip=8 seek=8
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 %.o: %.s
@@ -26,5 +30,5 @@ clean:
 	rm $(OBJS)
 	rm $(DFILES)
 
-tc: all
-	$(TERM) -e qemu-system-x86_64 -hda ./ddmOS.iso -boot a -m 4G -curses
+tc:
+	$(TERM) -e qemu-system-x86_64 -hda ./build/ddmOS.iso -boot a -m 4G -curses

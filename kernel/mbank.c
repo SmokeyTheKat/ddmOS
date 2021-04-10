@@ -22,9 +22,7 @@ void init_mbank(void)
 	multiboot_memory_map_t mme_null = (multiboot_memory_map_t){0};
 	mme_null.len = 0;
 	multiboot_memory_map_t* largest = &mme_null;
-	largest = mmap_usable_regions[0];
-	largest->addr = 0x1000000;
-	largest->len = 0x1000000000;
+	largest = mmap_usable_regions[1];
 /*
 	for (int i = 0; i < mmap_usable_region_count; i++)
 	{
@@ -33,12 +31,14 @@ void init_mbank(void)
 	}
 */
 
-	ddPrints("starting mbank at ");
+	ddPrints("STARTING MBANK AT ");
 	ddPrint_int(largest->addr+0x10);
 	ddPrints("\n");
 
-	mbank_main.base = largest->addr+0x10;
-	mbank_main.size = largest->len-0x10;
+	//mbank_main.base = largest->addr;
+	//mbank_main.size = largest->len;
+	mbank_main.base = 0x1000000;
+	mbank_main.size = largest->len;
 	*(struct mbank_repo*)mbank_main.base = make_mbank_repo(0, 0,
 						mbank_main.base+sizeof(struct mbank_repo),
 						16, 16, 0);

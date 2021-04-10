@@ -1,7 +1,0 @@
-      /\        william@DESKTOP-G7D5I2M9
-     /  \       os      ArtixLinux
-    /-_  \      kernel  5.11.8-artix1-1
-   /   `-_\     uptime  3 days, 16 hours, 3 minutes
-  /      _-\    cpu     Intel(R) telCore(TM) i7-4770 CPU @ 3.40GHz
- / ___--'-_ \   memory  4482M / 8057M
-/_/        \_\

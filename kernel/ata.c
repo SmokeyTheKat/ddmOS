@@ -15,7 +15,7 @@ static void ata_wait_drq(void)
 {
 	while (!(system_inb(0x1F7)&STATUS_RDY));
 }
-void read_sectors_ata_pio(void* target_address, uint32t lba, uint8t sector_count)
+void ata_read_sectors(void* target_address, uint32t lba, uint8t sector_count)
 {
 	ata_wait_bsy();
 	system_outb(0x1F6,0xB0);
@@ -38,7 +38,7 @@ void read_sectors_ata_pio(void* target_address, uint32t lba, uint8t sector_count
 	}
 }
 
-void write_sectors_ata_pio(uint32t lba, uint8t sector_count, void* vbytes)
+void ata_write_sectors(uint32t lba, uint8t sector_count, void* vbytes)
 {
 	ata_wait_bsy();
 	system_outb(0x1F6, 0xE0 | ((lba >> 24) & 0xF));

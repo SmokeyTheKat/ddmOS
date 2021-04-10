@@ -7,6 +7,6 @@
 	%1_size: dq %1_size - %1
 %endmacro
 
-;qincbin test, "test.txt"
-qincbin minfo, "minfo.txt"
+qincbin TEst, "./misc/test.txt"
+qincbin minfo, "./misc/minfo.txt"
 
