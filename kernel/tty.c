@@ -6,6 +6,7 @@
 #include <kernel/mbank.h>
 #include <kernel/system.h>
 #include <kernel/beep.h>
+#include <kernel/ata.h>
 #include <user/test.c>
 
 char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
@@ -14,6 +15,7 @@ struct vgatty mtty = { 0, 0, 20, 10, 0, 0 };
 
 void run_command(char* str, int len)
 {
+/*
 	int argc = 0;
 	for (int i = 0; i < len; i++)
 		if (str[i] == ' ') argc++;
@@ -41,6 +43,7 @@ void run_command(char* str, int len)
 		}
 		else mbuf[mpos++] = str[i];
 	}
+*/
 
 	if (cstring_compare(str, "true"))
 	{
@@ -49,7 +52,7 @@ void run_command(char* str, int len)
 	}
 	else if (cstring_compare_length(str, "test", 4))
 	{
-		test(argc, argv);
+		//test(argc, argv);
 	}
 	else if (cstring_compare(str, "false"))
 	{
@@ -78,6 +81,65 @@ void run_command(char* str, int len)
 		}
 		beep(ddString_to_int(n1), ddString_to_int(n2));
 	}
+	else if (cstring_compare_length(str, "plba", 4))
+	{
+		if (len <= 5) return;
+		char* target = malloc(256);
+		read_sectors_ata_pio((char*)target, ddString_to_int(make_constant_ddString(str+5)), 1);
+		ddPrints(target);
+		ddPrints("\n");
+		free(target);
+	}
+	else if (cstring_compare(str, "find"))
+	{
+		char* target = malloc(256);
+		int i;
+		for (i = 0; !cstring_compare_length(target, "OMGHITHEREHOWAREYOUDOINGTODAYYO", 31); i++)
+		{
+			read_sectors_ata_pio((char*)target, i, 1);
+		}
+		i--;
+		ddPrints("FOUND 'OMGHITHEREHOWAREYOUDOINGTODAYYO' :) at lba ");
+		ddPrint_int(i);
+		ddPrints("\n");
+		free(target);
+	}
+	else if (cstring_compare(str, "print"))
+	{
+		ddPrints("TEST\n");
+	}
+	else if (cstring_compare(str, "atar"))
+	{
+		ddPrints("READING FIRST 2 BYTES FROM DISK\n");
+		char* target = malloc(256);
+		read_sectors_ata_pio((char*)target, 0x00, 1);
+		ddPrint((char*)target, 2);
+		free(target);
+	}
+	else if (cstring_compare(str, "ataw"))
+	{
+		ddPrints("WRITING FIRST 2 BYTES ON DISK AS 'YO'\n");
+		char* target = malloc(256);
+		read_sectors_ata_pio((char*)target, 0x00, 1);
+		target[0] = 'Y';
+		target[1] = 'O';
+		write_sectors_ata_pio(0x00, 1, target);
+		free(target);
+	}
+	else if (cstring_compare(str, "poweroff"))
+	{
+		system_poweroff();
+	}
+	else if (cstring_compare(str, "reboot"))
+	{
+		system_reboot();
+	}
+	else if (cstring_compare(str, "clear"))
+	{
+		vga_clear();
+		vga_move_cursor(0, 0);
+		vga_update_cursor();
+	}
 	else if (cstring_compare(str, "minfo"))
 	{
 		extern const char minfo[];
@@ -93,10 +155,10 @@ void run_command(char* str, int len)
 	else if (cstring_compare(str, "mbtest"))
 	{
 		ddPrints("running mbank test\n");
-		long len = 100000;
+		long len = 100;
 		char* a = malloc(len);
 		for (int i = 0; i < len; i++)
-			a[i] = 234514327598;
+			a[i] = 23;
 
 		ddPrints("malloc a 100 = ");	
 		ddPrint_int((long)a);
@@ -136,7 +198,7 @@ void vgatty_handle_key(uint8t key)
 	if (key == '\n')
 	{
 		ddPrint_char('\n');
-		run_command(buf, pos);
+		run_command((char*)buf, pos);
 		ddPrints(PS1);
 		buf[0] = 0;
 		pos = 0;

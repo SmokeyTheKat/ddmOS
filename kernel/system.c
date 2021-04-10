@@ -6,10 +6,30 @@ uint8t system_inb(uint16t _port)
 	asm volatile("inb %1, %0" : "=a"(_o) : "d"(_port));
 	return _o;
 }
+uint16t system_inw(uint32t _port)
+{
+	uint16t _o;
+	asm volatile("inw %1, %0" : "=a"(_o) : "d"(_port));
+	return _o;
+}
+uint32t system_inl(uint64t _port)
+{
+	uint32t _o;
+	asm volatile("inl %1, %0" : "=a"(_o) : "d"(_port));
+	return _o;
+}
 
 void system_outb(uint16t _port, uint8t _v)
 {
 	asm volatile("outb %0, %1" : : "a"(_v), "d"(_port));
+}
+void system_outw(uint32t _port, uint16t _v)
+{
+	asm volatile("outw %0, %1" : : "a"(_v), "d"(_port));
+}
+void system_outl(uint64t _port, uint32t _v)
+{
+	asm volatile("outl %0, %1" : : "a"(_v), "d"(_port));
 }
 
 void system_await_input(void)
@@ -24,6 +44,11 @@ void system_halt(void)
 	asm volatile("hlt;");
 }
 
+void system_poweroff(void)
+{
+	system_outw(0x604, 0x2000);
+	system_outw(0xB004, 0x2000);
+}
 void system_reboot(void)
 {
 	uint8t _g = 0x02;

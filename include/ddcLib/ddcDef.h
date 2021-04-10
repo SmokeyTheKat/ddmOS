@@ -1,9 +1,16 @@
 #ifndef __ddclib_ddcDef_h__
 #define __ddclib_ddcDef_h__
 
+#define NULL (0)
+
 #define true 1
 #define false 0
 typedef char bool;
+
+typedef unsigned char		byte;
+typedef unsigned short		word;
+typedef unsigned int		dword;
+typedef unsigned long		qword;
 
 typedef signed char             int8t;
 typedef signed short 		int16t;

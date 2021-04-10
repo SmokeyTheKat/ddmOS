@@ -1,5 +1,6 @@
 CSRCS = $(shell find ./kernel/ -type f -name '*.c') \
-	$(shell find ./ddcLib/ -type f -name '*.c')
+	$(shell find ./ddcLib/ -type f -name '*.c') \
+	$(shell find ./stdlib/ -type f -name '*.c')
 ASMSRCS = $(shell find ./boot/ -type f -name '*.s') \
 	  $(shell find ./kernel/ -type f -name '*.s')
 OBJS =  $(CSRCS:.c=.o) $(ASMSRCS:.s=.o)
@@ -26,4 +27,4 @@ clean:
 	rm $(DFILES)
 
 tc: all
-	$(TERM) -e qemu-system-x86_64 -cdrom ./ddmOS.iso -boot a -m 4G -curses
+	$(TERM) -e qemu-system-x86_64 -hda ./ddmOS.iso -boot a -m 4G -curses

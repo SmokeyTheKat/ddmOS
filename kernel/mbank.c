@@ -23,6 +23,8 @@ void init_mbank(void)
 	mme_null.len = 0;
 	multiboot_memory_map_t* largest = &mme_null;
 	largest = mmap_usable_regions[0];
+	largest->addr = 0x1000000;
+	largest->len = 0x1000000000;
 /*
 	for (int i = 0; i < mmap_usable_region_count; i++)
 	{

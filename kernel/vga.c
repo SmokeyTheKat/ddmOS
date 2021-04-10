@@ -71,6 +71,8 @@ void vga_update_cursor(void)
 }
 void vga_move_cursor(int x, int y)
 {
+	g_term_x = x;
+	g_term_y = y;
 	uint16t _p = (y*TERMWIDTH)+x;
 	system_outb(0x3D4, 0x0F);
 	system_outb(0x3D5, (uint8t)(_p & 0xFF));

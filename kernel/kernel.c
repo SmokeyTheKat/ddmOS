@@ -7,6 +7,7 @@
 #include <kernel/tty.h>
 #include <kernel/mmap.h>
 #include <kernel/mbank.h>
+#include <kernel/pci.h>
 #include <boot/multiboot.h>
 
 extern const char test[];
@@ -22,14 +23,13 @@ void print_mode(void)
 
 void kmain(void)
 {
-	char buf[20];
 	init_vga();
-	vga_clear();
-	print_mode();
 	init_mmap_regions();
 	init_mbank();
+	vga_clear();
+	print_mode();
+	//init_pci();
 	init_idt();
-	ddPrints("\n");
 	init_keyboard();
 	init_vgatty();
 
