@@ -5,6 +5,6 @@
 
 void pcspk_play(uint32t freq);
 void pcspk_nosound(void);
-void beep(uint32t freq, uint32t time);
+void pcspk_beep(uint32t freq, uint32t time);
 
 #endif

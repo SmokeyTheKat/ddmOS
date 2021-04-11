@@ -36,3 +36,10 @@ isr1:
 	POPAQ
 	iretq
 
+extern isr128_handler
+global isr128
+isr128:
+	PUSHAQ
+	call isr128_handler
+	POPAQ
+	iretq

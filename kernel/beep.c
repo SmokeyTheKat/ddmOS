@@ -20,7 +20,7 @@ void pcspk_nosound(void)
 	system_outb(0x61, (system_inb(0x61) & 0xfc));
 }
 
-void beep(uint32t freq, uint32t time)
+void pcspk_beep(uint32t freq, uint32t time)
 {
 	pcspk_play(freq);
 	system_sleep(time);

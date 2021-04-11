@@ -31,4 +31,4 @@ clean:
 	rm $(DFILES)
 
 tc:
-	$(TERM) -e qemu-system-x86_64 -hda ./build/ddmOS.iso -boot a -m 4G -curses
+	qemu-system-x86_64 -hda ./build/ddmOS.iso -boot a -m 4G -soundhw pcspk

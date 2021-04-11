@@ -82,7 +82,7 @@ void run_command(char* str, int len)
 			}
 			ddString_push_char_back(&n2, str[i]);
 		}
-		beep(ddString_to_int(n1), ddString_to_int(n2));
+		pcspk_beep(ddString_to_int(n1), ddString_to_int(n2));
 	}
 	else if (cstring_compare_length(str, "cat", 3))
 	{
