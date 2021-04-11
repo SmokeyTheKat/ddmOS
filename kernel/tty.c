@@ -14,6 +14,8 @@ char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
 
 struct vgatty mtty = { 0, 0, 20, 10, 0, 0 };
 
+uint32t dir = 1;
+
 void run_command(char* str, int len)
 {
 /*
@@ -81,6 +83,26 @@ void run_command(char* str, int len)
 			ddString_push_char_back(&n2, str[i]);
 		}
 		beep(ddString_to_int(n1), ddString_to_int(n2));
+	}
+	else if (cstring_compare_length(str, "cat", 3))
+	{
+		if (len <= 4) return;
+		uint32t sec = ddString_to_int(make_constant_ddString(str+3));
+		struct fs_file f = fs_get_file_data(sec);
+		char* data = malloc(f.size*512);
+		ata_read_sectors(data, fs_get_location()+sec+1, f.size);
+		ddPrints(data);
+		ddPrints("\n");
+		free(data);
+	}
+	else if (cstring_compare_length(str, "cd", 2))
+	{
+		if (len <= 3) return;
+		dir = ddString_to_int(make_constant_ddString(str+3));
+	}
+	else if (cstring_compare(str, "ls"))
+	{
+		fs_ls(dir);
 	}
 	else if (cstring_compare_length(str, "ls", 2))
 	{

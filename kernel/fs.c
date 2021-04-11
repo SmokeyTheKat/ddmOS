@@ -28,11 +28,11 @@ void fs_print_name(uint32t sec)
 	ddMem_copy((char*)f.data, buf, 512);
 	free(buf);
 	ddPrints("    ");
-	ddPrint_int(f.type);
-	ddPrints(" - ");
 	ddPrint_int(sec);
 	ddPrints(" - ");
 	ddPrints((char*)f.name);
+	if (f.type == 1)
+		ddPrints("/");
 	ddPrints("\n");
 }
 void fs_ls(uint32t sec)
@@ -51,6 +51,25 @@ void fs_ls(uint32t sec)
 		pos++;
 	}
 
+}
+
+struct fs_folder fs_get_folder_data(uint32t sec)
+{
+	struct fs_folder f = {0};
+	char* buf = malloc(512);
+	ata_read_sectors(buf, fs_head+sec, 1);
+	ddMem_copy((char*)f.data, buf, 512);
+	free(buf);
+	return f;
+}
+struct fs_file fs_get_file_data(uint32t sec)
+{
+	struct fs_file f = {0};
+	char* buf = malloc(512);
+	ata_read_sectors(buf, fs_head+sec, 1);
+	ddMem_copy((char*)f.data, buf, 512);
+	free(buf);
+	return f;
 }
 
 void init_fs(void)

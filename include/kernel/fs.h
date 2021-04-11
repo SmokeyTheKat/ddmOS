@@ -36,5 +36,7 @@ struct fs_folder
 void init_fs(void);
 uint32t fs_get_location(void);
 void fs_ls(uint32t sec);
+struct fs_folder fs_get_folder_data(uint32t sec);
+struct fs_file fs_get_file_data(uint32t sec);
 
 #endif
