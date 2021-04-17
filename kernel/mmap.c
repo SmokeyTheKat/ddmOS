@@ -21,7 +21,7 @@ void print_memory_map(multiboot_memory_map_t* mmap)
 
 void init_mmap_regions(void)
 {
-	for (multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)multiboot_ptr->mmap_addr;
+	for (multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)(multiboot_uint64_t)multiboot_ptr->mmap_addr;
 		(unsigned long) mmap < multiboot_ptr->mmap_addr + multiboot_ptr->mmap_length;
 			mmap = (multiboot_memory_map_t *) ((unsigned long) mmap
 			+ mmap->size + sizeof (mmap->size)))

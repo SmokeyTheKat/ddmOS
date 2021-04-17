@@ -55,7 +55,10 @@ void run_command(char* str, int len)
 	}
 	else if (cstring_compare_length(str, "test", 4))
 	{
-		//test(argc, argv);
+		extern char test_program[];
+		asm("call test_program\n");
+		(void)test_program;
+		//((void(*)(void))(char*)(test_program))();
 	}
 	else if (cstring_compare(str, "false"))
 	{
@@ -84,6 +87,17 @@ void run_command(char* str, int len)
 		}
 		pcspk_beep(ddString_to_int(n1), ddString_to_int(n2));
 	}
+	else if (cstring_compare_length(str, "exec", 4))
+	{
+		if (len <= 5) return;
+		uint32t sec = ddString_to_int(make_constant_ddString(str+3));
+		struct fs_file f = fs_get_file_data(sec);
+		char* data = malloc(f.size*512);
+		ata_read_sectors(data, fs_get_location()+sec+1, f.size);
+		//((void(*)(void))data)();
+		asm volatile("call %0\n"::"r"(data));
+		free(data);
+	}
 	else if (cstring_compare_length(str, "cat", 3))
 	{
 		if (len <= 4) return;
@@ -99,6 +113,10 @@ void run_command(char* str, int len)
 	{
 		if (len <= 3) return;
 		dir = ddString_to_int(make_constant_ddString(str+3));
+	}
+	else if (cstring_compare_length(str, "mkdir", 5))
+	{
+		fs_mkdir(dir, str+6);
 	}
 	else if (cstring_compare(str, "ls"))
 	{
@@ -130,7 +148,6 @@ void run_command(char* str, int len)
 		char* target = malloc(256);
 		int i = 0;
 		int flen = cstring_length(str+5);
-		bool found = false;
 		for (i = 0; !cstring_compare_length(target, str+5, flen); i++)
 		{
 			ata_read_sectors((char*)target, i, 1);

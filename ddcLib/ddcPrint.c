@@ -7,7 +7,7 @@ void ddPrint(void* data, long length)
 void ddPrints(char* data)
 {
 	long length = cstring_length(data);
-	vga_write(data, length);
+	ddPrint(data, length);
 }
 void ddPrint_char(char c)
 {

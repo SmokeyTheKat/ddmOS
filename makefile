@@ -7,7 +7,7 @@ OBJS =  $(CSRCS:.c=.o) $(ASMSRCS:.s=.o)
 DFILES =  $(CSRCS:.c=.d)
 
 CC = gcc
-CFLAGS = -nostdlib -nostdinc -fno-builtin -ffreestanding -O2 -g -Wall -Wextra -m64 -MMD -mno-red-zone -mcmodel=kernel -fno-pie -I ./include/ 
+CFLAGS = -nostdlib -nostdinc -fno-builtin -ffreestanding -O2 -g -Wall -Wextra -m64 -MMD -mno-red-zone -mcmodel=kernel -fno-pie -I ./include/
 
 all: compile
 

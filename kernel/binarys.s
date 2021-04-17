@@ -9,4 +9,4 @@
 
 qincbin TEst, "./misc/test.txt"
 qincbin minfo, "./misc/minfo.txt"
-
+qincbin test_program, "./usr/test"

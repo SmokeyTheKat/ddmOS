@@ -4,7 +4,7 @@
 #include <ddcLib/ddcPrint.h>
 
 extern uint64t isr1;
-extern uint64t isr128;
+extern uint64t isr105;
 uint64t* isrs[256] = {0};
 
 extern struct IDT64 _idt[256];
@@ -20,7 +20,7 @@ void init_idt(void)
 {
 	for (int i = 0; i < 256; i++)
 		isrs[i] = &isr1;
-	isrs[128] = &isr128;
+	isrs[0x69] = &isr105;
 	for (int i = 0; i < 256; i++)
 	{
 		_idt[i].zero = 0;
@@ -51,9 +51,9 @@ extern void isr1_handler(void)
 	system_outb(0x20, 0x20);
 	isr_handlers[1]();
 }
-extern void isr128_handler(void)
+extern void isr105_handler(void)
 {
 	//ddPrints("int 0x80\n");
-	isr_handlers[128]();
+	isr_handlers[0x69]();
 	system_outb(0x20, 0x20);
 }

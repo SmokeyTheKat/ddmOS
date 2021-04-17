@@ -14,6 +14,7 @@
 #include <kernel/pci.h>
 #include <kernel/fs.h>
 #include <kernel/syscall.h>
+#include <elf.h>
 
 extern const char test[];
 
@@ -24,14 +25,6 @@ void print_mode(void)
 	ddPrints(CFWHITE"KERNEL IS RUNNING IN ");
 	ddPrints(make_ddString_from_buf_from_int(buf, 10, sizeof(long)*8).cstr);
 	ddPrints(" BIT MODE\n");
-}
-
-void stt(void)
-{
-	asm(	"movq $1, %rcx\n"
-		"movq $500, %rdi\n"
-		"movq $4000000, %rsi\n"
-		"int $0x80\n");
 }
 
 void kmain(void)
@@ -52,19 +45,15 @@ void kmain(void)
 	ddPrint_int(fs_get_location());
 	ddPrints("\n");
 
-	//init_pci();
-	ddPrints("INITIALIZING IDT...");
+	ddPrints("INITIALIZING INTERRUPTS...");
 	init_idt();
 	init_syscalls();
 	ddPrints(" ["CFGREEN"DONE"CFWHITE"]\n");
+	//init_pci();
 
 	extern void syscall_test(void);
 	//syscall_test();
 
-	char* space = malloc(1000);
-	ddMem_copy(space, stt, 1000);
-	//((void(*)(void))space)();
-	free(space);
 
 	ddPrints("INITIALIZING KEYBOARD...");
 	init_keyboard();
