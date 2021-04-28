@@ -47,6 +47,13 @@ isr1:
 	call isr1_handler
 	POPAQ
 	iretq
+extern isr12_handler
+global isr12
+isr12:
+	PUSHAQ
+	call isr12_handler
+	POPAQ
+	iretq
 
 extern syscall
 global isr105

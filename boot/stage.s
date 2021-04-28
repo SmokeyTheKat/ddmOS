@@ -9,6 +9,8 @@ long_mode_start:
 	mov fs, ax
 	mov gs, ax
 
+	cli
+
 	extern kmain
 	call kmain
 

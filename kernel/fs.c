@@ -91,6 +91,14 @@ struct fs_file fs_get_file_data(uint32t sec)
 	free(buf);
 	return f;
 }
+uint64t fs_get_file_size(uint32t sec)
+{
+	char* buf = malloc(512);
+	ata_read_sectors(buf, fs_head+sec, 1);
+	struct fs_file f = *(struct fs_file*)buf;
+	free(buf);
+	return f.size;
+}
 
 void init_fs(void)
 {

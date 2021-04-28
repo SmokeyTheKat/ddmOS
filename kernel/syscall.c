@@ -29,13 +29,26 @@ void syscall(void)
 	asm volatile("\t movq %%r13,%0":"=r"(r[5]));
 	asm volatile("\t movq %%r14,%0":"=r"(r[6]));
 	asm volatile("\t movq %%r15,%0":"=r"(r[7]));
+	//ddPrints("s: ");
+	//ddPrint_int(rcx);
+	//ddPrints("\n");
 	__syscall_vector[rcx](r);
 }
 
 void __syscall_print(uint64t r[8])
 {
-	char* str = (char*)r[0];
-	vga_write(str, r[1]);
+/*
+	uint64t ptr = 0x1000000;
+	while (!cstring_compare((char*)ptr, "hi there omg yo :D"))
+		ptr++;
+	ddPrints("found at ");
+	ddPrint_int(ptr);
+	ddPrints(" ");
+	ddPrints("while ");
+	ddPrint_int(r[0]);
+	ddPrints(" was given\n");
+*/
+	vga_write((char*)(r[0]+0x600), r[1]);
 }
 void __syscall_print_null_term(uint64t r[8])
 {

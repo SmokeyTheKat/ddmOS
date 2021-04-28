@@ -5,6 +5,7 @@
 
 extern uint64t isr1;
 extern uint64t isr105;
+extern uint64t isr12;
 uint64t* isrs[256] = {0};
 
 extern struct IDT64 _idt[256];
@@ -19,7 +20,8 @@ void isr_void(void)
 void init_idt(void)
 {
 	for (int i = 0; i < 256; i++)
-		isrs[i] = &isr1;
+		isrs[i] = &isr12;
+	isrs[0x09] = &isr1;
 	isrs[0x69] = &isr105;
 	for (int i = 0; i < 256; i++)
 	{
@@ -50,6 +52,12 @@ extern void isr1_handler(void)
 	//ddPrints("INT 0x01\n");
 	system_outb(0x20, 0x20);
 	isr_handlers[1]();
+}
+extern void isr12_handler(void)
+{
+	ddPrints("INT 0x0c\n");
+	system_outb(0x20, 0x20);
+	//isr_handlers[1]();
 }
 extern void isr105_handler(void)
 {

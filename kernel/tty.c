@@ -8,7 +8,38 @@
 #include <kernel/beep.h>
 #include <kernel/ata.h>
 #include <kernel/fs.h>
+#include <elf.h>
 #include <user/test.c>
+
+#define PUSHAQ \
+	asm volatile("push %rax"); \
+	asm volatile("push %rcx"); \
+	asm volatile("push %rdx"); \
+	asm volatile("push %rdi"); \
+	asm volatile("push %rsi"); \
+	asm volatile("push %r8"); \
+	asm volatile("push %r9"); \
+	asm volatile("push %r10"); \
+	asm volatile("push %r11"); \
+	asm volatile("push %r12"); \
+	asm volatile("push %r13"); \
+	asm volatile("push %r14"); \
+	asm volatile("push %r15")
+
+#define POPAQ \
+	asm volatile("pop %r15"); \
+	asm volatile("pop %r14"); \
+	asm volatile("pop %r13"); \
+	asm volatile("pop %r12"); \
+	asm volatile("pop %r11"); \
+	asm volatile("pop %r10"); \
+	asm volatile("pop %r9"); \
+	asm volatile("pop %r8"); \
+	asm volatile("pop %rsi"); \
+	asm volatile("pop %rdi"); \
+	asm volatile("pop %rdx"); \
+	asm volatile("pop %rcx"); \
+	asm volatile("pop %rax")
 
 char* PS1 = "\x1b[38;5;15m[\x1b[38;5;4mddm\x1b[38;5;1mOS\x1b[38;5;15m]> ";
 
@@ -91,12 +122,21 @@ void run_command(char* str, int len)
 	{
 		if (len <= 5) return;
 		uint32t sec = ddString_to_int(make_constant_ddString(str+3));
+/*
 		struct fs_file f = fs_get_file_data(sec);
-		char* data = malloc(f.size*512);
-		ata_read_sectors(data, fs_get_location()+sec+1, f.size);
-		//((void(*)(void))data)();
-		asm volatile("call %0\n"::"r"(data));
-		free(data);
+		struct elf_header* elfd = (struct elf_header*)0x1000000;
+		ata_read_sectors(elfd, fs_get_location()+sec+1, f.size);
+		PUSHAQ;
+		asm volatile("movq %0, %%rsp"::"r"((uint64t)elfd+((f.size+100)*512)));
+		asm volatile("movq %0, %%rbp"::"r"((uint64t)elfd+((f.size+100)*512)));
+		//char* tmp = (char*)((uint64t)elfd + (uint64t)(f.size*512));
+		//ddMem_copy(tmp, elfd->entry, f.size*512);
+		//ddMem_copy((char*)0x1000000, tmp, f.size*512);
+		asm volatile("call %0"::"r"((char*)elfd->entry));
+		POPAQ;
+*/
+		extern void exec(uint64t sec);
+		exec(sec);
 	}
 	else if (cstring_compare_length(str, "cat", 3))
 	{

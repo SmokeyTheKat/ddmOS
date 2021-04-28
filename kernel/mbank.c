@@ -37,7 +37,7 @@ void init_mbank(void)
 
 	//mbank_main.base = largest->addr;
 	//mbank_main.size = largest->len;
-	mbank_main.base = 0x1000000;
+	mbank_main.base = 0x2000000;
 	mbank_main.size = largest->len;
 	*(struct mbank_repo*)mbank_main.base = make_mbank_repo(0, 0,
 						mbank_main.base+sizeof(struct mbank_repo),

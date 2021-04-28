@@ -46,6 +46,11 @@ void ddString_push_char_front(ddString* d, char c)
 void ddString_make_int(ddString* d, long v)
 {
 	d->length = 0;
+	if (v == 0)
+	{
+		ddString_push_char_front(d, '0');
+		return;
+	}
 	while (v)
 	{
 		long x = v % 10;

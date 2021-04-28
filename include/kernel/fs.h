@@ -55,5 +55,6 @@ void fs_ls(uint32t sec);
 void fs_mkdir(uint32t sec, char* name);
 struct fs_folder fs_get_folder_data(uint32t sec);
 struct fs_file fs_get_file_data(uint32t sec);
+uint64t fs_get_file_size(uint32t sec);
 
 #endif

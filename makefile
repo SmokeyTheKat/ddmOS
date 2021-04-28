@@ -9,7 +9,7 @@ DFILES =  $(CSRCS:.c=.d)
 CC = gcc
 CFLAGS = -nostdlib -nostdinc -fno-builtin -ffreestanding -O2 -g -Wall -Wextra -m64 -MMD -mno-red-zone -mcmodel=kernel -fno-pie -I ./include/
 
-all: compile
+all: fs compile
 
 compile: $(OBJS)
 	mkdir -p ./build
@@ -22,6 +22,12 @@ compile: $(OBJS)
 fs:
 	dd if=./misc/magic of=./isodir/root/disk bs=8
 	dd if=/dev/zero of=./isodir/root/disk bs=1M count=500 skip=8 seek=8
+	ddfs ./isodir/root/disk i 10000
+	ddfs ./isodir/root/disk d 1 "home"
+	ddfs ./isodir/root/disk f 2 "text" ./misc/test.txt
+	nasm -felf64 ./usr/test.asm -o ./usr/test.o
+	ld -T ./usr/link.ld ./usr/test.o -o ./usr/test
+	ddfs ./isodir/root/disk f 2 "prog" ./usr/test
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 %.o: %.s

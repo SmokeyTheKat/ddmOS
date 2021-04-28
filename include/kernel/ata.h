@@ -3,7 +3,7 @@
 
 #include <ddcLib/ddcDef.h>
 
-void ata_read_sectors(void* target_address, uint32t lba, uint8t sector_count);
-void ata_write_sectors(uint32t lba, uint8t sector_count, void* bytes);
+void ata_read_sectors(void* target_address, uint64t lba, uint64t sector_count);
+void ata_write_sectors(uint64t lba, uint64t sector_count, void* vbytes);
 
 #endif

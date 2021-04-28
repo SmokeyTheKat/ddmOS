@@ -14,6 +14,7 @@
 #include <kernel/pci.h>
 #include <kernel/fs.h>
 #include <kernel/syscall.h>
+#include <kernel/mouse.h>
 #include <elf.h>
 
 extern const char test[];
@@ -45,11 +46,13 @@ void kmain(void)
 	ddPrint_int(fs_get_location());
 	ddPrints("\n");
 
+
 	ddPrints("INITIALIZING INTERRUPTS...");
 	init_idt();
 	init_syscalls();
 	ddPrints(" ["CFGREEN"DONE"CFWHITE"]\n");
 	//init_pci();
+	init_mouse();
 
 	extern void syscall_test(void);
 	//syscall_test();
